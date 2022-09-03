@@ -1,84 +1,144 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
+    public CharacterController controller;
+
+    [Header("Health Properties")]
     public float maxHealth = 10.0f;
+    [HideInInspector]
     public float health;
+
+    private GameObject healthBar;
+    private Image healthBarFill;
+    public Color goodHealth = new Color(69, 255, 137);
+    public Color lowHealth = new Color(255, 0, 85);
+    public float healthLerpSpeed = 5;       // higher lerp speed goes faster.
 
     [Header("Physics")]
     public float jumpForce = 22.5f;
-    public float baseSpeed = 10.0f;
-    [HideInInspector]
     public float speed = 10.0f;
     [HideInInspector]
-    public Vector3 velocity = new Vector3(0.0f, 0.0f, 0.0f); //How fast we are going.
+    Vector3 velocity = new Vector3(0.0f, 0.0f, 0.0f); // How fast we are going.
     // player will use its own gravity for jump physics.
     public float gravityScale = 2.5f;
     public static float globalGravity = -9.81f;
 
-    [Header("Jump Checking & Sound")]
-    public Transform groundCheck;
-    public float groundDistance = .5f;
-    public LayerMask groundMask;
-    private bool isGrounded;
+    [Header("Jump Sound")]
+    // can use these to see ground type. maybe use it?
+    //public Transform groundCheck;
+    //public float groundDistance = .5f;
+    //public LayerMask groundMask;
+    //private bool isGrounded;
     public AudioSource jumpSound;
 
-    private Rigidbody rb;
-
-    // Start is called before the first frame update
     void Start()
     {
-        // get rigidbody component, use custom gravity.
-        rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
+        health = maxHealth;
+
+        // find health bar from UI in scene hierarchy.
+        healthBar = GameObject.Find("Canvas/HealthBar/HealthBarInner");
+        // get fill image of health bar.
+        healthBarFill = healthBar.GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        HPLerp();
+
+        if(controller.isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
+
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+
+        Vector3 move = transform.right * x + transform.forward * z;
+
+        controller.Move(move * speed * Time.deltaTime);
+
+        velocity.y += globalGravity * gravityScale * Time.deltaTime;
+
+        controller.Move(velocity * Time.deltaTime);
+
         // jump button. only jump when the player is touching the ground.
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && controller.isGrounded)
         {
             Jump();
-            isGrounded = false;
         }
-    }
-
-    void FixedUpdate()
-    {
-        // gravity.
-        Vector3 gravity = globalGravity * gravityScale * Vector3.up;
-        rb.AddForce(gravity, ForceMode.Acceleration);
-
-        // movement.
-        float translation = Input.GetAxis("Vertical");
-        float straffe = Input.GetAxis("Horizontal");
-        this.velocity = new Vector3(straffe, 0, translation);
-
-        float movementMagnitudeSquared = this.velocity.sqrMagnitude;
-
-        if (movementMagnitudeSquared > 1.0f)
-        {
-
-            this.velocity /= Mathf.Sqrt(movementMagnitudeSquared);
-
-        }
-
-        this.velocity *= speed;
-
-        //transform.Translate(movement);
-        transform.position += this.velocity * Time.deltaTime;
-
-        // check for jump availability.
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
     }
 
     void Jump()
     {
-        rb.AddForce(new Vector3(0, 1, 0) * jumpForce, ForceMode.Impulse);
+        velocity.y = Mathf.Sqrt(jumpForce * -2f * globalGravity);
     }
 
+    // update health bar UI.
+    public void HealthUpdate()
+    {
+        // clamp health to not go above max HP.
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        // make health bar green again if player recovers enough HP.
+        if (health / maxHealth > .30)
+        {
+            healthBarFill.color = goodHealth;
+        }
+
+        // clamp health to not go below 0.
+        if (health < 0)
+        {
+            health = 0;
+        }
+
+        // make the health bar red when the player is at low HP.
+        if ((health / maxHealth <= .30) || (health == 1))
+        {
+            healthBarFill.color = lowHealth;
+        }
+
+        // respawn when dead.
+        if (health == 0)
+        {
+            Debug.Log("death");
+            //UpdateScore(this.gameObject.tag);
+            //this.photonView.RPC("UpdateScore", RpcTarget.All, this.gameObject.name);
+        }
+    }
+
+    void HealthUp(float healAmt)
+    {
+		//if (gameManager.ShouldntUpdate(this)) return;
+        //hpRestore.Play();
+
+        // restore HP by amount from source of heal.
+        health += healAmt;
+        HealthUpdate();
+
+    }
+
+    void HealthDown(float hurtAmt)
+    {
+		//if (gameManager.ShouldntUpdate(this)) return;
+        //hpDrain.Play();
+
+        // decrease health by amount from source of damage.
+        health -= hurtAmt;
+        HealthUpdate();
+    }
+
+    void HPLerp()
+    {
+        // goes in Update() to animate lerp.
+        // update health bar fill amount.
+        healthBarFill.fillAmount = Mathf.Lerp(healthBarFill.fillAmount, (health / maxHealth), Time.deltaTime * healthLerpSpeed);
+    }
 }

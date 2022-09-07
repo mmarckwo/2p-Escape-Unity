@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1566649060878645602}
   - component: {fileID: 692500549998068192}
   - component: {fileID: 6065970374377730781}
-  m_Layer: 0
+  - component: {fileID: 1681404050800166284}
+  m_Layer: 7
   m_Name: PlayerChr
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -75,6 +76,24 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1681404050800166284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139417697403144896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef6b4f4452025248b760c5e88e0bfbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCam: {fileID: 2343811191019518645}
+  throwSpeed: 12
+  Flashlight: {fileID: 8624675278913786648, guid: 0bb377be300c8c74292ac29fab45370d, type: 3}
+  Umbrella: {fileID: 8624675278913786648, guid: 6b87385d595167344957f510d6215e77, type: 3}
+  Hammer: {fileID: 8624675278913786648, guid: 85fddf7b2314f66478c1b077a7aac224, type: 3}
+  Teleporter: {fileID: 8624675278913786648, guid: 87e4e023437de6c4fbb64bb8c0610b2a, type: 3}
 --- !u!1 &2603205491383423994
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +106,7 @@ GameObject:
   - component: {fileID: 2343811191019518645}
   - component: {fileID: 450135516045246530}
   - component: {fileID: 2743405596694789712}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +204,7 @@ GameObject:
   - component: {fileID: 3017097283269595039}
   - component: {fileID: 8219667711470620491}
   - component: {fileID: 6024789704594128444}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Ground Checker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +299,7 @@ GameObject:
   - component: {fileID: 3850300534621550018}
   - component: {fileID: 4128819362559439974}
   - component: {fileID: 8800360302790516914}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

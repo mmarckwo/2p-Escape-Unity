@@ -58,12 +58,13 @@ public class PlayerScript : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
+        // movement.
         Vector3 move = transform.right * x + transform.forward * z;
+        move = Vector3.ClampMagnitude(move, 1f);
+        controller.Move(move * speed * Time.deltaTime); 
 
-        controller.Move(move * speed * Time.deltaTime);
-
+        // gravity.
         velocity.y += globalGravity * gravityScale * Time.deltaTime;
-
         controller.Move(velocity * Time.deltaTime);
 
         // jump button. only jump when the player is touching the ground.

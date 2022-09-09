@@ -49,13 +49,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 6065970374377730781}
+  originalStepOffset: 0
   maxHealth: 100
   health: 0
   goodHealth: {r: 0.27058825, g: 1, b: 0.5372549, a: 1}
   lowHealth: {r: 1, g: 0, b: 0.33333334, a: 1}
   healthLerpSpeed: 5
   jumpForce: 8.5
-  speed: 10
+  speed: 8.5
   gravityScale: 3.5
   jumpSound: {fileID: 0}
 --- !u!143 &6065970374377730781

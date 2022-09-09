@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour
 {
     public CharacterController controller;
+    public float originalStepOffset;
 
     [Header("Health Properties")]
     public float maxHealth = 10.0f;
@@ -38,6 +39,7 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         health = maxHealth;
+        originalStepOffset = controller.stepOffset;
 
         // find health bar from UI in scene hierarchy.
         healthBar = GameObject.Find("Canvas/HealthBar/HealthBarInner");
@@ -53,6 +55,11 @@ public class PlayerScript : MonoBehaviour
         if(controller.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
+            controller.stepOffset = originalStepOffset;
+        } 
+        else
+        {
+            controller.stepOffset = 0;
         }
 
         float x = Input.GetAxis("Horizontal");

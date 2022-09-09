@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 4509923447573132475}
   - component: {fileID: 4999412065509529744}
   - component: {fileID: 1684303428513062839}
-  - component: {fileID: 1155122191899861195}
+  - component: {fileID: 7584825850066617112}
   m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
@@ -179,7 +179,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8598008752888187662}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1684303428513062839
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -221,8 +221,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &1155122191899861195
-SphereCollider:
+--- !u!136 &7584825850066617112
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -231,8 +231,9 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8624675278913786648
 GameObject:
@@ -245,7 +246,7 @@ GameObject:
   - component: {fileID: 2783604938939756504}
   - component: {fileID: 7190998395285976706}
   - component: {fileID: 5705521758413380573}
-  - component: {fileID: 6628847494662983927}
+  - component: {fileID: 5161048350941489570}
   - component: {fileID: 5174321011500580677}
   - component: {fileID: 4251002892962677282}
   m_Layer: 0
@@ -277,7 +278,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8624675278913786648}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &5705521758413380573
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -319,8 +320,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6628847494662983927
-SphereCollider:
+--- !u!136 &5161048350941489570
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -329,8 +330,9 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5174321011500580677
 Rigidbody:

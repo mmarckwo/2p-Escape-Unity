@@ -27,6 +27,8 @@ public class PlayerScript : MonoBehaviour
     // player will use its own gravity for jump physics.
     public float gravityScale = 2.5f;
     public static float globalGravity = -9.81f;
+    [HideInInspector]
+    public int umbrellaFloat = 1;
 
     [Header("Jump Sound")]
     // can use these to see ground type. maybe use it?
@@ -70,8 +72,9 @@ public class PlayerScript : MonoBehaviour
         move = Vector3.ClampMagnitude(move, 1f);
         controller.Move(move * speed * Time.deltaTime); 
 
-        // gravity.
-        velocity.y += globalGravity * gravityScale * Time.deltaTime;
+        // gravity. divide by umbrella float strength (1 if not holding; no effect).
+        velocity.y += (globalGravity * gravityScale / umbrellaFloat) * Time.deltaTime;
+        //if (velocity.y > 12f) velocity.y = 0f;
         controller.Move(velocity * Time.deltaTime);
 
         // jump button. only jump when the player is touching the ground.
@@ -82,9 +85,27 @@ public class PlayerScript : MonoBehaviour
 
     }
 
+    public void UmbrellaFall()
+    {
+        // partially umbrella mechanic, also prevents the player from moonjumping by opening after regular jump.
+        if (velocity.y < 0f) return;
+
+        velocity.y = Mathf.Sqrt(jumpForce / umbrellaFloat);
+    }
+
     void Jump()
     {
-        velocity.y = Mathf.Sqrt(jumpForce * -2f * globalGravity);
+
+        // if the umbrella is open, greatly reduce jump height. 
+        if (umbrellaFloat != 1)
+        {
+            velocity.y = Mathf.Sqrt((jumpForce / 4f) * -2f * globalGravity / umbrellaFloat);
+        }
+        else
+        {
+            velocity.y = Mathf.Sqrt(jumpForce * -2f * globalGravity);
+        }
+        
     }
 
     // update health bar UI.

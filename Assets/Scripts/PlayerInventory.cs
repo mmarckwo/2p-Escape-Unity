@@ -8,6 +8,8 @@ public class PlayerInventory : MonoBehaviour
     public Camera playerCam;
     private float playerXRotation;
 
+    private PlayerScript playerScript;
+
     private string[] inventory = new string[2] {"", ""};
 
     private int itemSelect = 0; // item 1 held by default. 
@@ -16,25 +18,40 @@ public class PlayerInventory : MonoBehaviour
 
     public GameObject Flashlight;
     public GameObject Umbrella;
+    public int umbrellaFloatStrength = 5; 
     public GameObject Hammer;
     public GameObject Teleporter;
+
+    private GameObject flashlightHold;
+    private GameObject umbrellaHold;
+    private GameObject hammerHold;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        flashlightHold = this.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        umbrellaHold = this.transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
+        hammerHold = this.transform.GetChild(0).GetChild(0).GetChild(2).gameObject;
+
+        // get playerscript to change umbrella float. 
+        playerScript = gameObject.GetComponent<PlayerScript>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown("1")) {
+            StopHolding();
             itemSelect = 0;
+            HoldItem(inventory[itemSelect]);
         }
 
         if (Input.GetKeyDown("2"))
         {
+            StopHolding();
             itemSelect = 1;
+            HoldItem(inventory[itemSelect]);
         }
 
         // use item selected at slot. 
@@ -60,13 +77,23 @@ public class PlayerInventory : MonoBehaviour
 
         if (itemName == "Flashlight")
         {
-            Debug.Log("use flashlight");
+            flashlightHold.GetComponent<Flashlight_USE>().toggleLight();
             return; 
         }
 
         if (itemName == "Umbrella")
         {
-            Debug.Log("use umbrella");
+            umbrellaHold.GetComponent<Umbrella_USE>().toggleCanopy();
+
+            if (umbrellaHold.GetComponent<Umbrella_USE>().status == false)
+            {
+                playerScript.umbrellaFloat = 1;
+            } 
+            else
+            {
+                playerScript.umbrellaFloat = umbrellaFloatStrength;
+                playerScript.UmbrellaFall();
+            }
             return; 
         }
 
@@ -122,6 +149,8 @@ public class PlayerInventory : MonoBehaviour
                 ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }
 
+            StopHolding();
+
             // when a player throws an item, they can't pick up their own item immediately. 
             StartCoroutine(pickupCooldown(0.2f));
         }
@@ -158,6 +187,36 @@ public class PlayerInventory : MonoBehaviour
         }
 
         return true;
+    }
+
+    void StopHolding()
+    {
+        flashlightHold.SetActive(false);
+        umbrellaHold.SetActive(false);
+        hammerHold.SetActive(false);
+
+        // reset umbrella float since player isn't holding anything. 
+        playerScript.umbrellaFloat = 1;
+    }
+
+    void HoldItem(string itemName)
+    {
+        if (itemName == "") return;
+
+        if (itemName == "Flashlight")
+        {
+            flashlightHold.SetActive(true);
+        }
+
+        if (itemName == "Umbrella")
+        {
+            umbrellaHold.SetActive(true);
+        }
+
+        if (itemName == "Hammer")
+        {
+            hammerHold.SetActive(true);
+        }
     }
 
     IEnumerator pickupCooldown(float timer)

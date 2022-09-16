@@ -25,6 +25,7 @@ public class PlayerInventory : MonoBehaviour
     private GameObject flashlightHold;
     private GameObject umbrellaHold;
     private GameObject hammerHold;
+    private GameObject teleporterHold;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,7 @@ public class PlayerInventory : MonoBehaviour
         flashlightHold = this.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
         umbrellaHold = this.transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
         hammerHold = this.transform.GetChild(0).GetChild(0).GetChild(2).gameObject;
+        teleporterHold = this.transform.GetChild(0).GetChild(0).GetChild(3).gameObject;
 
         // get playerscript to change umbrella float. 
         playerScript = gameObject.GetComponent<PlayerScript>();
@@ -105,7 +107,7 @@ public class PlayerInventory : MonoBehaviour
 
         if (itemName == "Teleporter")
         {
-            Debug.Log("use teleporter");
+            teleporterHold.GetComponent<Teleporter_USE>().useTeleporter(this.gameObject);
             return; 
         }
     }
@@ -194,6 +196,7 @@ public class PlayerInventory : MonoBehaviour
         flashlightHold.SetActive(false);
         umbrellaHold.SetActive(false);
         hammerHold.SetActive(false);
+        teleporterHold.SetActive(false);
 
         // reset umbrella float since player isn't holding anything. 
         playerScript.umbrellaFloat = 1;
@@ -216,6 +219,11 @@ public class PlayerInventory : MonoBehaviour
         if (itemName == "Hammer")
         {
             hammerHold.SetActive(true);
+        }
+
+        if (itemName == "Teleporter")
+        {
+            teleporterHold.SetActive(true);
         }
     }
 

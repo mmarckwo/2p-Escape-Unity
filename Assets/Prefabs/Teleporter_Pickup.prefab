@@ -248,6 +248,7 @@ GameObject:
   - component: {fileID: 6628847494662983927}
   - component: {fileID: 5174321011500580677}
   - component: {fileID: 4251002892962677282}
+  - component: {fileID: 9175140632451863486}
   m_Layer: 0
   m_Name: Teleporter_Pickup
   m_TagString: Untagged
@@ -361,3 +362,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Teleporter
+--- !u!114 &9175140632451863486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8624675278913786648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 274cf81cf978a904ba64bf1d0ab64ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portal: {fileID: 7526336002479002799, guid: eb0418fb8ec76b649a742adbfe772476, type: 3}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DmgTest : MonoBehaviour
 {
-    // on collide increase player health.
+    // on collide decrease player health.
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")

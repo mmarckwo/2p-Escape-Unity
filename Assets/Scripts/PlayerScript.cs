@@ -154,7 +154,7 @@ public class PlayerScript : MonoBehaviour
 
     }
 
-    void HealthDown(float hurtAmt)
+    public void HealthDown(float hurtAmt)
     {
 		//if (gameManager.ShouldntUpdate(this)) return;
         //hpDrain.Play();

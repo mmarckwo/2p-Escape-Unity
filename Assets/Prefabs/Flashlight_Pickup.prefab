@@ -343,6 +343,8 @@ GameObject:
   - component: {fileID: 5174321011500580677}
   - component: {fileID: 4251002892962677282}
   - component: {fileID: 3226168333049642188}
+  - component: {fileID: 8643359752068484597}
+  - component: {fileID: 6774139327019736478}
   m_Layer: 0
   m_Name: Flashlight_Pickup
   m_TagString: Untagged
@@ -470,3 +472,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 636ffaef06407bd4e987f55d3d70653f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8643359752068484597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8624675278913786648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1710889294, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  InterpolationSpace: 0
+  InterpolationTarget: {fileID: 0}
+  InterpolateErrorCorrection: 1
+  InterpolatedErrorCorrectionSettings:
+    MinRate: 3.3
+    MaxRate: 10
+    PosBlendStart: 0.25
+    PosBlendEnd: 1
+    PosMinCorrection: 0.025
+    PosTeleportDistance: 2
+    RotBlendStart: 0.1
+    RotBlendEnd: 0.5
+    RotTeleportRadians: 1.5
+--- !u!114 &6774139327019736478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8624675278913786648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: 0bb377be300c8c74292ac29fab45370d
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 8643359752068484597}
+  SimulationBehaviours: []

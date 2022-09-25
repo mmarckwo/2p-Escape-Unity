@@ -8,8 +8,12 @@ using Fusion.Sockets;
 
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
-    [SerializeField] private NetworkPrefabRef _playerPrefab;
+    [SerializeField] private NetworkPlayer _playerPrefab;
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
+
+    //public NetworkPlayer playerPrefabNP;
+
+    CharacterInputHandler characterInputHandler;
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
     {
@@ -17,37 +21,62 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             // Create a unique position for the player
             Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.DefaultPlayers) * 3, 1, 0);
-            NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+            runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
+            //NetworkObject networkPlayerObject = runner.Spawn(playerPrefabNP, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars so we can remove it when they disconnect
-            _spawnedCharacters.Add(player, networkPlayerObject);
+            //_spawnedCharacters.Add(player, networkPlayerObject);
         }
     }
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) 
     {
         // Find and remove the players avatar
-        if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
-        {
-            runner.Despawn(networkObject);
-            _spawnedCharacters.Remove(player);
-        }
+    //    if (_spawnedCharacters.TryGetValue(player, out NetworkObject networkObject))
+    //    {
+    //        runner.Despawn(networkObject);
+    //        _spawnedCharacters.Remove(player);
+    //    }
+    }
+
+    //private bool _mouseButton0;
+    //private bool _mouseButton1;
+    private void Update()
+    {
+        //_mouseButton0 = _mouseButton0 || Input.GetMouseButton(0);
+        //_mouseButton1 = _mouseButton1 || Input.GetMouseButton(1);
     }
     public void OnInput(NetworkRunner runner, NetworkInput input) 
     {
-        var data = new NetworkInputData();
+        //var data = new NetworkInputData();
 
-        if (Input.GetKey(KeyCode.W))
-            data.direction += Vector3.forward;
+        //if (Input.GetKey(KeyCode.W))
+        //    data.direction += Vector3.forward;
 
-        if (Input.GetKey(KeyCode.S))
-            data.direction += Vector3.back;
+        //if (Input.GetKey(KeyCode.S))
+        //    data.direction += Vector3.back;
 
-        if (Input.GetKey(KeyCode.A))
-            data.direction += Vector3.left;
+        //if (Input.GetKey(KeyCode.A))
+        //    data.direction += Vector3.left;
 
-        if (Input.GetKey(KeyCode.D))
-            data.direction += Vector3.right;
+        //if (Input.GetKey(KeyCode.D))
+        //    data.direction += Vector3.right;
 
-        input.Set(data);
+        //if (_mouseButton0)
+        //    data.buttons |= NetworkInputData.MOUSEBUTTON1;
+        //_mouseButton0 = false;
+
+        //if (_mouseButton1)
+        //    data.buttons |= NetworkInputData.MOUSEBUTTON2;
+        //_mouseButton1 = false;
+
+        //input.Set(data);
+
+        if (characterInputHandler == null && NetworkPlayer.Local != null)
+            characterInputHandler = NetworkPlayer.Local.GetComponent<CharacterInputHandler>();
+
+        if (characterInputHandler != null)
+        {
+            input.Set(characterInputHandler.GetNetworkInput());
+        }
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }

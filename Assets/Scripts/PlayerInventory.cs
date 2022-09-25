@@ -125,28 +125,28 @@ public class PlayerInventory : MonoBehaviour
             // TEMPORARY AND BAD REMOVE WHEN YOU CAN.
             if (itemName == "Flashlight")
             {
-                GameObject ThrownItem = Instantiate(Flashlight, transform.position, playerCam.transform.rotation); 
+                GameObject ThrownItem = Instantiate(Flashlight, transform.position + transform.forward, playerCam.transform.rotation); 
 
                 ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }
 
             if (itemName == "Umbrella")
             {
-                GameObject ThrownItem = Instantiate(Umbrella, transform.position, playerCam.transform.rotation);
+                GameObject ThrownItem = Instantiate(Umbrella, transform.position + transform.forward, playerCam.transform.rotation);
 
                 ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }
 
             if (itemName == "Hammer")
             {
-                GameObject ThrownItem = Instantiate(Hammer, transform.position, playerCam.transform.rotation);
+                GameObject ThrownItem = Instantiate(Hammer, transform.position + transform.forward, playerCam.transform.rotation);
 
                 ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }
 
             if (itemName == "Teleporter")
             {
-                GameObject ThrownItem = Instantiate(Teleporter, transform.position, playerCam.transform.rotation);
+                GameObject ThrownItem = Instantiate(Teleporter, transform.position + transform.forward, playerCam.transform.rotation);
 
                 ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }

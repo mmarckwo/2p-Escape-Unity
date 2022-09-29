@@ -7,6 +7,8 @@ public class CharacterInputHandler : MonoBehaviour
     Vector2 moveInputVector = Vector2.zero;
     Vector2 viewInputVector = Vector2.zero;
     bool isJumpButtonPressed = false;
+    bool isUseButtonPressed = false;
+    bool isThrowButtonPressed = false;
 
     LocalCameraHandler localCameraHandler;
 
@@ -38,6 +40,14 @@ public class CharacterInputHandler : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
             isJumpButtonPressed = true;
 
+        // use held item. 
+        if (Input.GetButtonDown("Fire1"))
+            isUseButtonPressed = true;
+
+        // throw held item.
+        if (Input.GetButtonDown("Fire2"))
+            isThrowButtonPressed = true;
+
         // set view
         localCameraHandler.SetViewInputVector(viewInputVector);
     }
@@ -55,8 +65,16 @@ public class CharacterInputHandler : MonoBehaviour
         // jump data.
         networkInputData.isJumpPressed = isJumpButtonPressed;
 
+        // use item data.
+        networkInputData.isUseButtonPressed = isUseButtonPressed;
+
+        // throw item data.
+        networkInputData.isThrowButtonPressed = isThrowButtonPressed;
+
         // reset variables after their states have been read.
         isJumpButtonPressed = false;
+        isUseButtonPressed = false;
+        isThrowButtonPressed = false;
 
         return networkInputData;
     }

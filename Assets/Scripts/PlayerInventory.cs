@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : NetworkBehaviour
 {
 
     public Camera playerCam;
@@ -14,6 +15,8 @@ public class PlayerInventory : MonoBehaviour
 
     private int itemSelect = 0; // item 1 held by default. 
     public float throwSpeed = 12f;
+    [Networked(OnChanged = nameof(OnThrowChanged))]
+    public bool isThrowing { get; set; }
     private bool onPickupCooldown = false;
 
     public GameObject Flashlight;
@@ -40,33 +43,58 @@ public class PlayerInventory : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void FixedUpdateNetwork()
     {
-        if (Input.GetKeyDown("1")) {
-            StopHolding();
-            itemSelect = 0;
-            HoldItem(inventory[itemSelect]);
+        // get the input from the network.
+        if (GetInput(out NetworkInputData networkInputData))
+        {
+            if (networkInputData.isFirstItemButtonPressed)
+            {
+                StopHolding();
+                itemSelect = 0;
+                HoldItem(inventory[itemSelect]);
+            }
+
+            if (networkInputData.isSecondItemButtonPressed)
+            {
+                StopHolding();
+                itemSelect = 1;
+                HoldItem(inventory[itemSelect]);
+            }
+
+            // use item selected at slot.
+            if (networkInputData.isUseButtonPressed)
+                UseItem(inventory[itemSelect]);
+
+            // throw item selected at slot.
+            if (networkInputData.isThrowButtonPressed)
+                ThrowItem(inventory[itemSelect], itemSelect, networkInputData.aimForwardVector);
         }
 
-        if (Input.GetKeyDown("2"))
-        {
-            StopHolding();
-            itemSelect = 1;
-            HoldItem(inventory[itemSelect]);
-        }
+        //if (Input.GetKeyDown("1")) {
+        //    StopHolding();
+        //    itemSelect = 0;
+        //    HoldItem(inventory[itemSelect]);
+        //}
 
-        // use item selected at slot. 
-        if (Input.GetButtonDown("Fire1"))
-        {
-            UseItem(inventory[itemSelect]);
-        }
+        //if (Input.GetKeyDown("2"))
+        //{
+        //    StopHolding();
+        //    itemSelect = 1;
+        //    HoldItem(inventory[itemSelect]);
+        //}
 
-        // throw item selected at slot. 
-        if (Input.GetButtonDown("Fire2"))
-        {
-            ThrowItem(inventory[itemSelect], itemSelect);
-        }
+        //// use item selected at slot. 
+        //if (Input.GetButtonDown("Fire1"))
+        //{
+        //    UseItem(inventory[itemSelect]);
+        //}
+
+        //// throw item selected at slot. 
+        //if (Input.GetButtonDown("Fire2"))
+        //{
+        //    ThrowItem(inventory[itemSelect], itemSelect);
+        //}
     }
 
     void UseItem(string itemName)
@@ -112,7 +140,7 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    void ThrowItem(string itemName, int index)
+    void ThrowItem(string itemName, int index, Vector3 aimForwardVector)
     {
         if (itemName == "")
         {
@@ -125,16 +153,20 @@ public class PlayerInventory : MonoBehaviour
             // TEMPORARY AND BAD REMOVE WHEN YOU CAN.
             if (itemName == "Flashlight")
             {
-                GameObject ThrownItem = Instantiate(Flashlight, transform.position + transform.forward, playerCam.transform.rotation); 
+                GameObject ThrownItem = Instantiate(Flashlight, transform.position + transform.forward, playerCam.transform.rotation); // playerCam.transform.rotation
 
                 ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }
 
             if (itemName == "Umbrella")
             {
-                GameObject ThrownItem = Instantiate(Umbrella, transform.position + transform.forward, playerCam.transform.rotation);
+                //GameObject ThrownItem = Instantiate(Umbrella, transform.position + transform.forward, playerCam.transform.rotation);
 
-                ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
+                Runner.Spawn(Umbrella, transform.position + transform.forward, playerCam.transform.rotation, Object.InputAuthority, (runner, o) => {
+                    o.GetComponent<Umbrella_USE>().Init(throwSpeed);
+                });
+
+                //ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }
 
             if (itemName == "Hammer")
@@ -153,10 +185,31 @@ public class PlayerInventory : MonoBehaviour
 
             StopHolding();
 
-            // when a player throws an item, they can't pick up their own item immediately. 
-            StartCoroutine(pickupCooldown(0.2f));
+            // when a player throws an item, they can't pick up their own item immediately or throw. 
+            StartCoroutine(pickupAndThrowCooldown(0.2f));
         }
 
+    }
+
+    static void OnThrowChanged(Changed<PlayerInventory> changed)
+    {
+        bool isThrowingCurrent = changed.Behaviour.isThrowing;
+
+        // load the old value.
+        changed.LoadOld();
+
+        bool isThrowingOld = changed.Behaviour.isThrowing;
+
+        if (isThrowingCurrent && !isThrowingOld)
+            changed.Behaviour.ThrowItemRemote();
+    }
+
+    void ThrowItemRemote()
+    {
+        //NetworkInputData networkInputData;
+
+        //if (!Object.HasInputAuthority)
+            //ThrowItem(inventory[itemSelect], itemSelect, networkInputData.aimForwardVector);
     }
 
     public bool CheckCollectItem(string itemName)
@@ -227,10 +280,12 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    IEnumerator pickupCooldown(float timer)
+    IEnumerator pickupAndThrowCooldown(float timer)
     {
         onPickupCooldown = true;
+        isThrowing = true;
         yield return new WaitForSeconds(timer);
+        isThrowing = false;
         onPickupCooldown = false;
     }
 }

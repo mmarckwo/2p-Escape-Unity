@@ -459,6 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 940c422d6682f4b4daa467566141de1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   itemName: Flashlight
 --- !u!114 &3226168333049642188
 MonoBehaviour:
@@ -520,5 +521,6 @@ MonoBehaviour:
     RawGuidValue: 0bb377be300c8c74292ac29fab45370d
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 4251002892962677282}
   - {fileID: 8643359752068484597}
   SimulationBehaviours: []

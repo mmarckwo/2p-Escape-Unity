@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class ItemInteraction : MonoBehaviour
+public class ItemInteraction : NetworkBehaviour
 {
 
     public string itemName = "";
@@ -18,8 +19,8 @@ public class ItemInteraction : MonoBehaviour
                 return;
             }
 
-            // CHANGE TO PUNRPC.
-            Destroy(this.gameObject);
+            //Destroy(this.gameObject);
+            Runner.Despawn(Object);
         }
 
         if (other.gameObject.tag == "Enemy")

@@ -7,20 +7,36 @@ public class ItemInteraction : NetworkBehaviour
 {
 
     public string itemName = "";
+    bool isCollected;
+    bool isCollecting = false;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerExit(Collider other)
     {
+        isCollecting = false;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+
         if (other.gameObject.tag == "Player")
         {
             // if inventory is full (true), do not collect and destroy item.
-            if (other.gameObject.GetComponent<PlayerInventory>().CheckCollectItem(itemName))
+            if (isCollecting == false)
             {
-                Debug.Log("inventory full");
-                return;
+                isCollecting = true;
+
+                if (other.gameObject.GetComponent<PlayerInventory>().CheckCollectItem(itemName))
+                {
+                    Debug.Log("inventory full");
+                    return;
+                } else
+                {
+                    isCollected = true;
+                }
             }
 
             //Destroy(this.gameObject);
-            Runner.Despawn(Object);
+            //isCollected = true;
         }
 
         if (other.gameObject.tag == "Enemy")
@@ -29,6 +45,14 @@ public class ItemInteraction : NetworkBehaviour
             {
                 //other.gameObject whatever kill enemy function.
             }
+        }
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (isCollected == true)
+        {
+            Runner.Despawn(Object);
         }
     }
 }

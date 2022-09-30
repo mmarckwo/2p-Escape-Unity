@@ -44,7 +44,8 @@ public class PlayerScript : NetworkBehaviour
     public AudioSource jumpSound;
 
     void Awake()
-    {
+    { 
+
         _originalController = GetComponent<CharacterController>();
         _networkController = GetComponent<NetworkCharacterControllerPrototype>();
         networkCharacterControllerPrototypeCustom = GetComponent<NetworkCharacterControllerPrototypeCustom>();

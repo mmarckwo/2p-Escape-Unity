@@ -15,8 +15,8 @@ public class PlayerInventory : NetworkBehaviour
 
     private int itemSelect = 0; // item 1 held by default. 
     public float throwSpeed = 12f;
-    [Networked(OnChanged = nameof(OnThrowChanged))]
-    public bool isThrowing { get; set; }
+    [Networked(OnChanged = nameof(OnHoldChanged))]
+    public bool isHolding { get; set; }
     private bool onPickupCooldown = false;
 
     public GameObject Flashlight;
@@ -30,13 +30,12 @@ public class PlayerInventory : NetworkBehaviour
     private GameObject hammerHold;
     private GameObject teleporterHold;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        flashlightHold = this.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
-        umbrellaHold = this.transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
-        hammerHold = this.transform.GetChild(0).GetChild(0).GetChild(2).gameObject;
-        teleporterHold = this.transform.GetChild(0).GetChild(0).GetChild(3).gameObject;
+        flashlightHold = this.transform.GetChild(3).GetChild(0).gameObject;
+        umbrellaHold = this.transform.GetChild(3).GetChild(1).gameObject;
+        hammerHold = this.transform.GetChild(3).GetChild(2).gameObject;
+        teleporterHold = this.transform.GetChild(3).GetChild(3).gameObject;
 
         // get playerscript to change umbrella float. 
         playerScript = gameObject.GetComponent<PlayerScript>();
@@ -142,6 +141,7 @@ public class PlayerInventory : NetworkBehaviour
 
     void ThrowItem(string itemName, int index, Vector3 aimForwardVector)
     {
+
         if (itemName == "")
         {
             Debug.Log("no item to throw");
@@ -150,7 +150,7 @@ public class PlayerInventory : NetworkBehaviour
         {
             inventory[index] = "";
 
-            // TEMPORARY AND BAD REMOVE WHEN YOU CAN.
+            // lol
             if (itemName == "Flashlight")
             {
                 GameObject ThrownItem = Instantiate(Flashlight, transform.position + transform.forward, playerCam.transform.rotation); // playerCam.transform.rotation
@@ -185,31 +185,29 @@ public class PlayerInventory : NetworkBehaviour
 
             StopHolding();
 
-            // when a player throws an item, they can't pick up their own item immediately or throw. 
-            StartCoroutine(pickupAndThrowCooldown(0.2f));
+            // when a player throws an item, they can't pick up their own item immediately or hold. 
+            StartCoroutine(pickupAndHoldCooldown(0.2f));
         }
 
     }
 
-    static void OnThrowChanged(Changed<PlayerInventory> changed)
+    static void OnHoldChanged(Changed<PlayerInventory> changed)
     {
-        bool isThrowingCurrent = changed.Behaviour.isThrowing;
+        bool isHoldingCurrent = changed.Behaviour.isHolding;
 
         // load the old value.
         changed.LoadOld();
 
-        bool isThrowingOld = changed.Behaviour.isThrowing;
+        bool isHoldingOld = changed.Behaviour.isHolding;
 
-        if (isThrowingCurrent && !isThrowingOld)
-            changed.Behaviour.ThrowItemRemote();
+        if (isHoldingCurrent && !isHoldingOld)
+            changed.Behaviour.HoldItemRemote();
     }
 
-    void ThrowItemRemote()
+    void HoldItemRemote()
     {
-        //NetworkInputData networkInputData;
-
-        //if (!Object.HasInputAuthority)
-            //ThrowItem(inventory[itemSelect], itemSelect, networkInputData.aimForwardVector);
+        if (Object.HasInputAuthority)
+            HoldItem(inventory[itemSelect]);
     }
 
     public bool CheckCollectItem(string itemName)
@@ -246,6 +244,7 @@ public class PlayerInventory : NetworkBehaviour
 
     void StopHolding()
     {
+
         flashlightHold.SetActive(false);
         umbrellaHold.SetActive(false);
         hammerHold.SetActive(false);
@@ -257,6 +256,7 @@ public class PlayerInventory : NetworkBehaviour
 
     void HoldItem(string itemName)
     {
+
         if (itemName == "") return;
 
         if (itemName == "Flashlight")
@@ -280,12 +280,12 @@ public class PlayerInventory : NetworkBehaviour
         }
     }
 
-    IEnumerator pickupAndThrowCooldown(float timer)
+    IEnumerator pickupAndHoldCooldown(float timer)
     {
         onPickupCooldown = true;
-        isThrowing = true;
+        isHolding = true;
         yield return new WaitForSeconds(timer);
-        isThrowing = false;
+        isHolding = false;
         onPickupCooldown = false;
     }
 }

@@ -77,7 +77,6 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform {
     if (IsGrounded || ignoreGrounded) {
       var newVel = Velocity;
       newVel.y += overrideImpulse ?? jumpImpulse;
-      
 
             // if the umbrella is open, greatly reduce jump height. 
             if (playerScript.umbrellaFloat != 1)

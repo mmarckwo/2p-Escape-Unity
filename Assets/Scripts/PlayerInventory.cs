@@ -114,7 +114,7 @@ public class PlayerInventory : NetworkBehaviour
         {
             umbrellaHold.GetComponent<Umbrella_USE>().toggleCanopy();
 
-            if (umbrellaHold.GetComponent<Umbrella_USE>().status == false)
+            if (umbrellaHold.GetComponent<Umbrella_USE>().networkStatus == false)
             {
                 playerScript.umbrellaFloat = 1;
             } 
@@ -150,7 +150,7 @@ public class PlayerInventory : NetworkBehaviour
         {
             inventory[index] = "";
 
-            // lol
+            // bad.
             if (itemName == "Flashlight")
             {
                 GameObject ThrownItem = Instantiate(Flashlight, transform.position + transform.forward, playerCam.transform.rotation); // playerCam.transform.rotation
@@ -229,6 +229,7 @@ public class PlayerInventory : NetworkBehaviour
         if (inventory[0] == "")
         {
             inventory[0] = itemName;
+            Debug.Log("added " + itemName + " to " + this.gameObject + " on slot 0");
             return false;
         }
 
@@ -236,6 +237,7 @@ public class PlayerInventory : NetworkBehaviour
         if (inventory[1] == "")
         {
             inventory[1] = itemName;
+            Debug.Log("added " + itemName + " to " + this.gameObject + " on slot 0");
             return false;
         }
 
@@ -256,7 +258,6 @@ public class PlayerInventory : NetworkBehaviour
 
     void HoldItem(string itemName)
     {
-
         if (itemName == "") return;
 
         if (itemName == "Flashlight")

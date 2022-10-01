@@ -27,7 +27,6 @@ public class ItemInteraction : NetworkBehaviour
 
                 if (other.gameObject.GetComponent<PlayerInventory>().CheckCollectItem(itemName))
                 {
-                    Debug.Log("inventory full");
                     return;
                 } else
                 {

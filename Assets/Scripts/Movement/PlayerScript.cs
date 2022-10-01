@@ -36,11 +36,6 @@ public class PlayerScript : NetworkBehaviour
     public int umbrellaFloat = 1;
 
     [Header("Jump Sound")]
-    // can use these to see ground type. maybe use it?
-    //public Transform groundCheck;
-    //public float groundDistance = .5f;
-    //public LayerMask groundMask;
-    //private bool isGrounded;
     public AudioSource jumpSound;
 
     void Awake()

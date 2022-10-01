@@ -27,16 +27,14 @@ public class Umbrella_USE : NetworkBehaviour
 
     public void toggleCanopy()
     {
-        if (status == false)
+        if (networkStatus == false)
         {
-            status = true;
             networkStatus = true;
             //closedBrella.SetActive(false);
             //openBrella.SetActive(true);
         }
         else
         {
-            status = false;
             networkStatus = false;
             //closedBrella.SetActive(true);
             //openBrella.SetActive(false);
@@ -47,12 +45,10 @@ public class Umbrella_USE : NetworkBehaviour
     {
         if (changed.Behaviour.networkStatus == false)
         {
-            Debug.Log("open network brella");
             changed.Behaviour.closedBrella.SetActive(true);
             changed.Behaviour.openBrella.SetActive(false);
         } else
         {
-            Debug.Log("close network brella");
             changed.Behaviour.closedBrella.SetActive(false);
             changed.Behaviour.openBrella.SetActive(true);
         }

@@ -28,7 +28,7 @@ public class Flashlight_USE : NetworkBehaviour
 
     static void onToggleChange(Changed<Flashlight_USE> changed)
     {
-        if(changed.Behaviour.networkStatus == false)
+        if (changed.Behaviour.networkStatus == false)
         {
             changed.Behaviour.spotlight.enabled = false;
         } else

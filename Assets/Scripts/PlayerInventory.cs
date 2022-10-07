@@ -67,6 +67,7 @@ public class PlayerInventory : NetworkBehaviour
             if (networkInputData.isThrowButtonPressed)
                 ThrowItem(inventory[itemSelect], itemSelect, networkInputData.aimForwardVector);
 
+            // make flashlight rotate to let players aim vertically.
             if (flashlightHold.activeInHierarchy)
             {
                 flashlightHold.transform.rotation = Quaternion.LookRotation(networkInputData.aimForwardVector);
@@ -116,6 +117,8 @@ public class PlayerInventory : NetworkBehaviour
 
         if (itemName == "Teleporter")
         {
+            if (teleporterHold.activeInHierarchy == false) return;
+
             teleporterHold.GetComponent<Teleporter_USE>().useTeleporter(this.gameObject);
             return; 
         }
@@ -159,9 +162,11 @@ public class PlayerInventory : NetworkBehaviour
 
             if (itemName == "Teleporter")
             {
-                GameObject ThrownItem = Instantiate(Teleporter, transform.position + transform.forward, playerCam.transform.rotation);
+                if (teleporterHold.activeInHierarchy == false) return;
 
-                ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
+                Runner.Spawn(Teleporter, transform.position + transform.forward, Quaternion.LookRotation(aimForwardVector), Object.InputAuthority, (runner, o) => {
+                    o.GetComponent<Teleporter_USE>().Init(throwSpeed);
+                });
             }
 
             inventory[index] = "";
@@ -269,7 +274,6 @@ public class PlayerInventory : NetworkBehaviour
         if (itemName == "Teleporter")
         {
             networkedInventory = "Teleporter";
-            teleporterHold.SetActive(true);
         }
     }
 
@@ -293,7 +297,15 @@ public class PlayerInventory : NetworkBehaviour
             changed.Behaviour.StopHolding();
             changed.Behaviour.umbrellaHold.GetComponent<Umbrella_USE>().networkStatus = false;
             changed.Behaviour.umbrellaHold.SetActive(true);
-        }    
+        }
+
+        // HAMMER HERE.
+
+        if (changed.Behaviour.networkedInventory == "Teleporter")
+        {
+            changed.Behaviour.StopHolding();
+            changed.Behaviour.teleporterHold.SetActive(true);
+        }
     }
 
     IEnumerator pickupCooldown(float timer)

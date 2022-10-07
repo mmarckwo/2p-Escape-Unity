@@ -1,32 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class Teleporter_USE : MonoBehaviour
+public class Teleporter_USE : NetworkBehaviour
 {
     public GameObject portal;
-    private bool openPortal = false;
-    static bool portalInstantiated = false;
-    private GameObject portalInstance;
+
+    private GameObject portalInstanceRef;
+
+    private NetworkId portalId;
+
+    // SET NETWORKED VALUE MAKE USE TELEPORTER CHANGE VALUE DO THE THINGS IN ONCHANGE FUNCTION.
 
     public void useTeleporter(GameObject player)
     {
-        // if the portal is not open, create one, say the portal is open. if portal is open, teleport the player to the portal and close the portal. 
-        if (!openPortal)
+        // if an open portal can't be found, create one. if an open portal can be found, teleport the player to the portal and close the portal. 
+        if (!SearchForPortal())
         {
-            // if the portal hasn't been created yet, create it, reference created portal. else, set it back to active.
-            if(!portalInstantiated)
-            {
-                portalInstance = Instantiate(portal, transform.position, Quaternion.identity);
-                portalInstantiated = true;
-            } 
-            else
-            {
-                portalInstance.transform.position = player.transform.position;
-                portalInstance.SetActive(true);
-            }
-
-            openPortal = true;
+            Runner.Spawn(portal, transform.position, Quaternion.identity);
         } 
         else
         {
@@ -34,11 +26,28 @@ public class Teleporter_USE : MonoBehaviour
             // character controller overrides manual transform changes.
             CharacterController pc = player.GetComponent<CharacterController>();
             pc.enabled = false;
-            player.transform.position = portalInstance.transform.position;
+            player.transform.position = portalInstanceRef.transform.position;
             pc.enabled = true;
-            portalInstance.SetActive(false);
-            openPortal = false;
+            Runner.Despawn(Runner.FindObject(portalId));
         }
 
+    }
+
+    private bool SearchForPortal()
+    {
+        if (GameObject.FindGameObjectWithTag("Portal"))
+        {
+            portalInstanceRef = GameObject.FindGameObjectWithTag("Portal");
+            portalId = portalInstanceRef.GetComponent<NetworkObject>();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void Init(float throwSpeed)
+    {
+        GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
     }
 }

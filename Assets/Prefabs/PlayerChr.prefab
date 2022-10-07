@@ -104,6 +104,7 @@ MonoBehaviour:
   umbrellaFloatStrength: 5
   Hammer: {fileID: 8624675278913786648, guid: 85fddf7b2314f66478c1b077a7aac224, type: 3}
   Teleporter: {fileID: 8624675278913786648, guid: 87e4e023437de6c4fbb64bb8c0610b2a, type: 3}
+  portal: {fileID: 7526336002479002799, guid: eb0418fb8ec76b649a742adbfe772476, type: 3}
 --- !u!114 &3781440911249927504
 MonoBehaviour:
   m_ObjectHideFlags: 0

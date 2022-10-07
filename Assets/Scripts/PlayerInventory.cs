@@ -24,6 +24,7 @@ public class PlayerInventory : NetworkBehaviour
     public int umbrellaFloatStrength = 5; 
     public GameObject Hammer;
     public GameObject Teleporter;
+    public GameObject portal;
 
     private GameObject flashlightHold;
     private GameObject umbrellaHold;
@@ -119,7 +120,7 @@ public class PlayerInventory : NetworkBehaviour
         {
             if (teleporterHold.activeInHierarchy == false) return;
 
-            teleporterHold.GetComponent<Teleporter_USE>().useTeleporter(this.gameObject);
+            teleporterHold.GetComponent<Teleporter_USE>().useTeleporter(this.gameObject, transform.position);
             return; 
         }
     }

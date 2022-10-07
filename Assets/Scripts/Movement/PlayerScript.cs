@@ -40,9 +40,10 @@ public class PlayerScript : NetworkBehaviour
 
     void Awake()
     { 
-
+        // don't need these?
         _originalController = GetComponent<CharacterController>();
         _networkController = GetComponent<NetworkCharacterControllerPrototype>();
+
         networkCharacterControllerPrototypeCustom = GetComponent<NetworkCharacterControllerPrototypeCustom>();
 
         localCamera = GetComponentInChildren<Camera>();

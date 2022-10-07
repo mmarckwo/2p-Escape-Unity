@@ -15,7 +15,7 @@ public class ItemInteraction : NetworkBehaviour
         isCollecting = false;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
 
         if (other.gameObject.tag == "Player")

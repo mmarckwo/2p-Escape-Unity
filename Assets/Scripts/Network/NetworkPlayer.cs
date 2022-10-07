@@ -31,7 +31,7 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
         }
 
         // make it easier to tell which player is which.
-        transform.name = $"P_{Object.Id}";
+        transform.name = $"Player_{Object.Id}";
     }
 
     public void PlayerLeft(PlayerRef player)

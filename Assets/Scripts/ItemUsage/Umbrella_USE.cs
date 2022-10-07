@@ -7,10 +7,11 @@ public class Umbrella_USE : NetworkBehaviour
 {
     private GameObject closedBrella;
     private GameObject openBrella;
-    [HideInInspector]
-    public bool status = false;
     [Networked(OnChanged = nameof(onCanopyChange))]
     public bool networkStatus { get; set; }
+
+    TickTimer canopyToggleTimer = TickTimer.None;
+    private bool canToggle = true;
 
     private void Awake()
     {
@@ -27,17 +28,20 @@ public class Umbrella_USE : NetworkBehaviour
 
     public void toggleCanopy()
     {
-        if (networkStatus == false)
+        if (canToggle)
         {
-            networkStatus = true;
-            //closedBrella.SetActive(false);
-            //openBrella.SetActive(true);
-        }
-        else
-        {
-            networkStatus = false;
-            //closedBrella.SetActive(true);
-            //openBrella.SetActive(false);
+            if (networkStatus == false)
+            {
+                networkStatus = true;
+            }
+            else
+            {
+                networkStatus = false;
+            }
+
+            canToggle = false;
+            // set a cooldown for toggling canopy to prevent the player from gliding extra long distances by rapidly toggling.
+            canopyToggleTimer = TickTimer.CreateFromSeconds(Runner, 0.5f);
         }
     }
 
@@ -51,6 +55,18 @@ public class Umbrella_USE : NetworkBehaviour
         {
             changed.Behaviour.closedBrella.SetActive(false);
             changed.Behaviour.openBrella.SetActive(true);
+        }
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        // re-enable toggling when timer expires.
+        if (canopyToggleTimer.Expired(Runner))
+        {
+            canToggle = true;
+
+            // prevent timer from being triggered again.
+            canopyToggleTimer = TickTimer.None;
         }
     }
 }

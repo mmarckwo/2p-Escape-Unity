@@ -12,11 +12,11 @@ public class PlayerInventory : NetworkBehaviour
     private PlayerScript playerScript;
 
     private string[] inventory = new string[2] {"", ""};
+    [Networked(OnChanged = nameof(OnHoldChanged))]
+    public string networkedInventory { get; set; }
 
     private int itemSelect = 0; // item 1 held by default. 
     public float throwSpeed = 12f;
-    [Networked(OnChanged = nameof(OnHoldChanged))]
-    public bool isHolding { get; set; }
     private bool onPickupCooldown = false;
 
     public GameObject Flashlight;
@@ -49,14 +49,12 @@ public class PlayerInventory : NetworkBehaviour
         {
             if (networkInputData.isFirstItemButtonPressed)
             {
-                StopHolding();
                 itemSelect = 0;
                 HoldItem(inventory[itemSelect]);
             }
 
             if (networkInputData.isSecondItemButtonPressed)
             {
-                StopHolding();
                 itemSelect = 1;
                 HoldItem(inventory[itemSelect]);
             }
@@ -68,32 +66,12 @@ public class PlayerInventory : NetworkBehaviour
             // throw item selected at slot.
             if (networkInputData.isThrowButtonPressed)
                 ThrowItem(inventory[itemSelect], itemSelect, networkInputData.aimForwardVector);
+
+            if (flashlightHold.activeInHierarchy)
+            {
+                flashlightHold.transform.rotation = Quaternion.LookRotation(networkInputData.aimForwardVector);
+            }
         }
-
-        //if (Input.GetKeyDown("1")) {
-        //    StopHolding();
-        //    itemSelect = 0;
-        //    HoldItem(inventory[itemSelect]);
-        //}
-
-        //if (Input.GetKeyDown("2"))
-        //{
-        //    StopHolding();
-        //    itemSelect = 1;
-        //    HoldItem(inventory[itemSelect]);
-        //}
-
-        //// use item selected at slot. 
-        //if (Input.GetButtonDown("Fire1"))
-        //{
-        //    UseItem(inventory[itemSelect]);
-        //}
-
-        //// throw item selected at slot. 
-        //if (Input.GetButtonDown("Fire2"))
-        //{
-        //    ThrowItem(inventory[itemSelect], itemSelect);
-        //}
     }
 
     void UseItem(string itemName)
@@ -106,12 +84,16 @@ public class PlayerInventory : NetworkBehaviour
 
         if (itemName == "Flashlight")
         {
+            if (flashlightHold.activeInHierarchy == false) return;
+
             flashlightHold.GetComponent<Flashlight_USE>().toggleLight();
             return; 
         }
 
         if (itemName == "Umbrella")
         {
+            if (umbrellaHold.activeInHierarchy == false) return;
+
             umbrellaHold.GetComponent<Umbrella_USE>().toggleCanopy();
 
             if (umbrellaHold.GetComponent<Umbrella_USE>().networkStatus == false)
@@ -148,25 +130,24 @@ public class PlayerInventory : NetworkBehaviour
         }
         else
         {
-            inventory[index] = "";
 
-            // bad.
+            // ok.
             if (itemName == "Flashlight")
             {
-                GameObject ThrownItem = Instantiate(Flashlight, transform.position + transform.forward, playerCam.transform.rotation); // playerCam.transform.rotation
+                if (flashlightHold.activeInHierarchy == false) return;
 
-                ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
+                Runner.Spawn(Flashlight, transform.position + transform.forward, Quaternion.LookRotation(aimForwardVector), Object.InputAuthority, (runner, o) => {
+                    o.GetComponent<Flashlight_USE>().Init(throwSpeed);
+                });
             }
 
             if (itemName == "Umbrella")
             {
-                //GameObject ThrownItem = Instantiate(Umbrella, transform.position + transform.forward, playerCam.transform.rotation);
+                if (umbrellaHold.activeInHierarchy == false) return;
 
-                Runner.Spawn(Umbrella, transform.position + transform.forward, playerCam.transform.rotation, Object.InputAuthority, (runner, o) => {
+                Runner.Spawn(Umbrella, transform.position + transform.forward, Quaternion.LookRotation(aimForwardVector), Object.InputAuthority, (runner, o) => {
                     o.GetComponent<Umbrella_USE>().Init(throwSpeed);
                 });
-
-                //ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }
 
             if (itemName == "Hammer")
@@ -183,32 +164,37 @@ public class PlayerInventory : NetworkBehaviour
                 ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
             }
 
-            StopHolding();
+            inventory[index] = "";
+            networkedInventory = "";
 
             // when a player throws an item, they can't pick up their own item immediately or hold. 
-            StartCoroutine(pickupAndHoldCooldown(0.2f));
+            StartCoroutine(pickupCooldown(0.2f));
         }
 
     }
 
-    static void OnHoldChanged(Changed<PlayerInventory> changed)
-    {
-        bool isHoldingCurrent = changed.Behaviour.isHolding;
+    //static void OnHoldChanged(Changed<PlayerInventory> changed)
+    //{
+    //    bool isHoldingCurrent = changed.Behaviour.isHolding;
 
-        // load the old value.
-        changed.LoadOld();
+    //    // load the old value.
+    //    changed.LoadOld();
 
-        bool isHoldingOld = changed.Behaviour.isHolding;
+    //    bool isHoldingOld = changed.Behaviour.isHolding;
 
-        if (isHoldingCurrent && !isHoldingOld)
-            changed.Behaviour.HoldItemRemote();
-    }
+    //    if (isHoldingCurrent && !isHoldingOld)
+    //    {
+    //        changed.Behaviour.HoldItemRemote();
+    //    }   
+    //}
 
-    void HoldItemRemote()
-    {
-        if (Object.HasInputAuthority)
-            HoldItem(inventory[itemSelect]);
-    }
+    //void HoldItemRemote()
+    //{
+    //    if (!Object.HasInputAuthority)
+    //    {
+    //        HoldItem(networkedInventory);
+    //    }
+    //}
 
     public bool CheckCollectItem(string itemName)
     {
@@ -229,7 +215,7 @@ public class PlayerInventory : NetworkBehaviour
         if (inventory[0] == "")
         {
             inventory[0] = itemName;
-            Debug.Log("added " + itemName + " to " + this.gameObject + " on slot 0");
+            //networkedInventory = inventory[0];
             return false;
         }
 
@@ -237,7 +223,7 @@ public class PlayerInventory : NetworkBehaviour
         if (inventory[1] == "")
         {
             inventory[1] = itemName;
-            Debug.Log("added " + itemName + " to " + this.gameObject + " on slot 0");
+            //networkedInventory = inventory[1];
             return false;
         }
 
@@ -246,7 +232,6 @@ public class PlayerInventory : NetworkBehaviour
 
     void StopHolding()
     {
-
         flashlightHold.SetActive(false);
         umbrellaHold.SetActive(false);
         hammerHold.SetActive(false);
@@ -256,37 +241,65 @@ public class PlayerInventory : NetworkBehaviour
         playerScript.umbrellaFloat = 1;
     }
 
+    // local call.
     void HoldItem(string itemName)
     {
-        if (itemName == "") return;
+        if (itemName == "") 
+        {
+            networkedInventory = "";
+            return;
+        } 
 
         if (itemName == "Flashlight")
         {
-            flashlightHold.SetActive(true);
+            networkedInventory = "Flashlight";
         }
 
         if (itemName == "Umbrella")
         {
-            umbrellaHold.SetActive(true);
+            networkedInventory = "Umbrella";
         }
 
         if (itemName == "Hammer")
         {
+            networkedInventory = "Hammer";
             hammerHold.SetActive(true);
         }
 
         if (itemName == "Teleporter")
         {
+            networkedInventory = "Teleporter";
             teleporterHold.SetActive(true);
         }
     }
 
-    IEnumerator pickupAndHoldCooldown(float timer)
+    // networked call.
+    static void OnHoldChanged(Changed<PlayerInventory> changed)
+    {
+        if (changed.Behaviour.networkedInventory == "")
+        {
+            changed.Behaviour.StopHolding();
+            return;
+        }
+
+        if (changed.Behaviour.networkedInventory == "Flashlight")
+        {
+            changed.Behaviour.StopHolding();
+            changed.Behaviour.flashlightHold.SetActive(true);
+        }
+
+        if (changed.Behaviour.networkedInventory == "Umbrella")
+        {
+            changed.Behaviour.StopHolding();
+            changed.Behaviour.umbrellaHold.GetComponent<Umbrella_USE>().networkStatus = false;
+            changed.Behaviour.umbrellaHold.SetActive(true);
+        }    
+    }
+
+    IEnumerator pickupCooldown(float timer)
     {
         onPickupCooldown = true;
-        isHolding = true;
         yield return new WaitForSeconds(timer);
-        isHolding = false;
         onPickupCooldown = false;
     }
 }

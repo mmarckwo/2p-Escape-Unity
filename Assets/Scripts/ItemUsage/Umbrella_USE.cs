@@ -61,7 +61,7 @@ public class Umbrella_USE : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         // re-enable toggling when timer expires.
-        if (canopyToggleTimer.Expired(Runner))
+        if (canopyToggleTimer.ExpiredOrNotRunning(Runner))
         {
             canToggle = true;
 

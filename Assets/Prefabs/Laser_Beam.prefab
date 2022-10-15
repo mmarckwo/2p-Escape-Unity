@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5768888136213633806}
   - component: {fileID: 285131488965267755}
   - component: {fileID: 8434804226136251131}
+  - component: {fileID: 3610827172778779155}
   m_Layer: 0
   m_Name: Laser_Beam
   m_TagString: Untagged
@@ -143,8 +144,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58d37b03f86ef8438a93f1d4c131126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   laserOrigin: {fileID: 6474932300988387003}
   maxRange: 15
+  collisionLayers:
+    serializedVersion: 2
+    m_Bits: 513
+--- !u!114 &3610827172778779155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776994705404523741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: 504a7e706a855e346a5c88bc6f59a0cf
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 8434804226136251131}
+  SimulationBehaviours: []
 --- !u!1 &4516496030908629543
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
 [ExecuteInEditMode]
-public class BeamRaycast : MonoBehaviour
+public class BeamRaycast : NetworkBehaviour
 {
     public Transform laserOrigin;
     public float maxRange = 100f;
@@ -12,47 +13,55 @@ public class BeamRaycast : MonoBehaviour
 
     private bool playerInside = false;
     private bool causeDamage = false;
-    private PlayerScript hurtingPlayer;
+    private HPHandler hurtingPlayer;
+
+    public LayerMask collisionLayers;
+
+    TickTimer dmgTickTimer = TickTimer.None;
 
     void Awake()
     {
         laserLine = GetComponent<LineRenderer>();
     }
 
-    void Update()
+    public override void FixedUpdateNetwork()
     {
         // first point of line renderer starts at laser origin.
         laserLine.SetPosition(0, laserOrigin.localPosition);
 
-        RaycastHit hit;
+        Runner.LagCompensation.Raycast(laserOrigin.position, laserOrigin.right, maxRange, Object.InputAuthority, out var hit, collisionLayers, HitOptions.IncludePhysX);
+        float hitDistance = maxRange;
+        playerInside = false;
 
-        // shoot a laser facing right. 
-        if(Physics.Raycast(laserOrigin.position, laserOrigin.right, out hit, maxRange))
+        if (hit.Distance > 0)
+            hitDistance = hit.Distance;
+
+        laserLine.SetPosition(1, new Vector3(hitDistance, 0, 0));
+
+        // hit player.
+        if (hit.Hitbox != null && playerInside == false)
         {
-            // if it hit something, set the x position of the line renderer's 2nd point to be at the point of collision. 
-            laserLine.SetPosition(1, new Vector3((hit.point.x - this.gameObject.transform.position.x), 0, 0)); 
-            if (hit.transform.tag == "Player" && playerInside == false)
-            {
-                // if a player is in the laser beam, get their playerscript component.
-                hurtingPlayer = hit.transform.GetComponent<PlayerScript>();
-                playerInside = true;
-                causeDamage = true;
-            } 
-            else if (hit.transform.tag == "Player" && playerInside == true)
-            {
-                // if the player is still inside the beam, no need to get their playerscript component again. 
-            }
-            else
-            {
-                // it hits something, but it's not the player. 
-                playerInside = false;
-                causeDamage = false;
-            }
+
+            playerInside = true;
+            causeDamage = true;
+
+
+            if (Object.HasStateAuthority)
+                hurtingPlayer = hit.Hitbox.transform.root.GetComponent<HPHandler>();
+        }
+        else if (hit.Hitbox != null && playerInside == true)
+        {
+            // player still inside beam, do not set values again.
+        }
+        // hit not player.
+        else if (hit.Collider != null)
+        {
+            playerInside = false;
+            causeDamage = false;
         } 
         else
         {
-            // if it doesn't hit anything, shoot the laser line to its max range.
-            laserLine.SetPosition(1, new Vector3(maxRange, 0, 0));
+            // just in case.
             playerInside = false;
             causeDamage = false;
         }
@@ -60,23 +69,20 @@ public class BeamRaycast : MonoBehaviour
         // if a player is inside, check for available damage ticks. 
         if (playerInside == true)
         {
-            CheckForDmgTicks();
+            if (!dmgTickTimer.ExpiredOrNotRunning(Runner))
+            {
+                causeDamage = false;
+            }
+
+            if (causeDamage == true)
+            {
+                dmgTickTimer = TickTimer.CreateFromSeconds(Runner, .4f);
+
+                //causeDamage = false;
+                if (Object.HasStateAuthority)
+                    hurtingPlayer.HealthDown(45f);
+
+            }
         }
-    }
-
-    // if there is a player inside and a damage tick is ready, start a damage tick. 
-    void CheckForDmgTicks()
-    {
-        if (causeDamage == true) StartCoroutine(dmgTicks());
-    }
-
-    // stop causing damage for a little, deal damage, wait for seconds. if the player is still inside the laser beam after the timer, deal another tick of damage.
-    IEnumerator dmgTicks()
-    {
-        causeDamage = false;
-        hurtingPlayer.HealthDown(45f);
-        yield return new WaitForSeconds(0.4f);
-        if (playerInside == true) causeDamage = true;
-
     }
 }

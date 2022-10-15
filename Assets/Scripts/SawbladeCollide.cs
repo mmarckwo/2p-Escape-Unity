@@ -7,14 +7,14 @@ public class SawbladeCollide : MonoBehaviour
 
     private bool playerInside = false;
     private bool causeDamage = false;
-    private PlayerScript hurtingPlayer;
+    private HPHandler hurtingPlayer;
 
     // on collide, get player script from colliding player. say there is that player within the sawblade, and it needs to deal damage.
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            hurtingPlayer = other.GetComponent<PlayerScript>();
+            hurtingPlayer = other.GetComponent<HPHandler>();
             playerInside = true;
             causeDamage = true;
 

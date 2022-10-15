@@ -78,6 +78,8 @@ public class PlayerInventory : NetworkBehaviour
 
     void UseItem(string itemName)
     {
+        if (!Object.HasStateAuthority) return;
+
         if (itemName == "")
         {
             Debug.Log("no item to use");
@@ -127,6 +129,7 @@ public class PlayerInventory : NetworkBehaviour
 
     void ThrowItem(string itemName, int index, Vector3 aimForwardVector)
     {
+        if (!Object.HasStateAuthority) return;
 
         if (itemName == "")
         {

@@ -803,6 +803,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3226168333049642188, guid: 0bb377be300c8c74292ac29fab45370d, type: 3}
+      propertyPath: LightOn
+      value: 
+      objectReference: {fileID: 2100000, guid: 481427c0dd2a8ef4b89a8c84cd452951, type: 2}
+    - target: {fileID: 3226168333049642188, guid: 0bb377be300c8c74292ac29fab45370d, type: 3}
+      propertyPath: LightOff
+      value: 
+      objectReference: {fileID: 2100000, guid: 7155e5f5cfd3048468df8b387c47d13e, type: 2}
     - target: {fileID: 5174321011500580677, guid: 0bb377be300c8c74292ac29fab45370d, type: 3}
       propertyPath: m_UseGravity
       value: 0

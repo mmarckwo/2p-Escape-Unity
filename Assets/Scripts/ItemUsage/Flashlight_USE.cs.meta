@@ -3,7 +3,11 @@ guid: 636ffaef06407bd4e987f55d3d70653f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Runner: {instanceID: 0}
+  - Object: {instanceID: 0}
+  - LightOn: {fileID: 2100000, guid: 481427c0dd2a8ef4b89a8c84cd452951, type: 2}
+  - LightOff: {fileID: 2100000, guid: 7155e5f5cfd3048468df8b387c47d13e, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

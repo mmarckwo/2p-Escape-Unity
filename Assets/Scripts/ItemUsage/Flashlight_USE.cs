@@ -9,15 +9,18 @@ public class Flashlight_USE : NetworkBehaviour
     [Networked(OnChanged = nameof(onToggleChange))]
     public bool networkStatus { get; set; }
 
-    public Material LightOn;
-    public Material LightOff;
-
-    private Material lightArea;
+    private GameObject OnFlashlight;
+    private GameObject OffFlashlight;
 
     private void Awake()
     {
         spotlight = this.transform.GetChild(0).GetChild(1).gameObject.GetComponent<Light>();
-        lightArea = this.transform.GetChild(0).GetChild(2).gameObject.GetComponent<MeshRenderer>().materials[1];
+
+        OnFlashlight = this.transform.GetChild(0).GetChild(2).gameObject;
+        OffFlashlight = this.transform.GetChild(0).GetChild(3).gameObject;
+
+        OffFlashlight.SetActive(false);
+
     }
 
     public void toggleLight()
@@ -38,12 +41,16 @@ public class Flashlight_USE : NetworkBehaviour
         {
             // light is off.
             changed.Behaviour.spotlight.enabled = false;
-            changed.Behaviour.lightArea = changed.Behaviour.LightOff;
+
+            changed.Behaviour.OnFlashlight.SetActive(false);
+            changed.Behaviour.OffFlashlight.SetActive(true);
         } else
         {
             // light is on.
             changed.Behaviour.spotlight.enabled = true;
-            changed.Behaviour.lightArea = changed.Behaviour.LightOn;
+
+            changed.Behaviour.OnFlashlight.SetActive(true);
+            changed.Behaviour.OffFlashlight.SetActive(false);
         }
     }
 

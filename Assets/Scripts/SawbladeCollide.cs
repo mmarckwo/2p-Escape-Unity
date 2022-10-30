@@ -9,6 +9,8 @@ public class SawbladeCollide : MonoBehaviour
     private bool causeDamage = false;
     private HPHandler hurtingPlayer;
 
+    public float turnSpeed = 120f;
+
     // on collide, get player script from colliding player. say there is that player within the sawblade, and it needs to deal damage.
     void OnTriggerEnter(Collider other)
     {
@@ -30,6 +32,8 @@ public class SawbladeCollide : MonoBehaviour
     
     void Update()
     {
+        transform.Rotate(new Vector3(0, turnSpeed, 0) * Time.deltaTime);
+
         // if there is no player inside, do nothing. else, cause a tick of damage.
         if (playerInside == false)
         {

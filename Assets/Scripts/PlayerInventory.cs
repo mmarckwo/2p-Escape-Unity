@@ -308,6 +308,7 @@ public class PlayerInventory : NetworkBehaviour
         if (changed.Behaviour.networkedInventory == "Teleporter")
         {
             changed.Behaviour.StopHolding();
+            changed.Behaviour.teleporterHold.GetComponent<Teleporter_USE>().networkStatusObj = GameObject.FindGameObjectWithTag("Portal");
             changed.Behaviour.teleporterHold.SetActive(true);
         }
     }

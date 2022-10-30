@@ -9,6 +9,9 @@ public class Teleporter_USE : NetworkBehaviour
 
     private GameObject portalInstanceRef;
 
+    private GameObject placePortalObj;
+    private GameObject readyPortalObj;
+
     private NetworkId portalId { get; set; }
 
     private GameObject player;
@@ -17,6 +20,26 @@ public class Teleporter_USE : NetworkBehaviour
 
     [Networked(OnChanged = nameof(onTogglePortal))]
     public bool networkStatus { get; set; }
+
+    [Networked(OnChanged = nameof(onFoundPortalObj))]
+    public bool networkStatusObj { get; set; }
+
+    private void Awake()
+    {
+        placePortalObj = this.transform.GetChild(0).GetChild(2).gameObject;
+        readyPortalObj = this.transform.GetChild(0).GetChild(3).gameObject;
+
+        if (GameObject.FindGameObjectWithTag("Portal"))
+        {
+            placePortalObj.SetActive(false);
+            readyPortalObj.SetActive(true);
+        } 
+        else
+        {
+            placePortalObj.SetActive(true);
+            readyPortalObj.SetActive(false);
+        }
+    }
 
     public void useTeleporter(GameObject playerRef, Vector3 playerPosition)
     {
@@ -36,6 +59,7 @@ public class Teleporter_USE : NetworkBehaviour
 
             foundPortal = true;
 
+            networkStatusObj = false;
             networkStatus = !networkStatus;
 
             return;
@@ -44,6 +68,8 @@ public class Teleporter_USE : NetworkBehaviour
         foundPortal = false;
 
         Runner.Spawn(portal, playerPosition, Quaternion.identity);
+
+        networkStatusObj = true;
 
         return;
     }
@@ -63,6 +89,19 @@ public class Teleporter_USE : NetworkBehaviour
             changed.Behaviour.player.transform.position = changed.Behaviour.portalInstanceRef.transform.position;
             pc.enabled = true;
             changed.Behaviour.Runner.Despawn(changed.Behaviour.Runner.FindObject(changed.Behaviour.portalId));
+        }
+    }
+
+    static void onFoundPortalObj(Changed<Teleporter_USE> changed)
+    {
+        if (changed.Behaviour.networkStatusObj == true)
+        {
+            changed.Behaviour.placePortalObj.SetActive(false);
+            changed.Behaviour.readyPortalObj.SetActive(true);
+        } else
+        {
+            changed.Behaviour.placePortalObj.SetActive(true);
+            changed.Behaviour.readyPortalObj.SetActive(false);
         }
     }
 

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
+public class NetworkPlayer : NetworkBehaviour, IPlayerLeft, IPlayerJoined
 {
     public static NetworkPlayer Local { get; set; }
 
     public Transform playerModel;
+    public GameObject player1Model;
+    public GameObject player2Model;
 
     public override void Spawned()
     {
@@ -35,6 +37,22 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft
 
         // make it easier to tell which player is which.
         transform.name = $"Player_{Object.Id}";
+    }
+
+    public void PlayerJoined(PlayerRef player)
+    {
+        // first spawned player starts as player 2 model, but switches to player 1 model when player 2 joins.
+        if (player != Object.InputAuthority)
+        {
+            // set to player 1 model.
+            player1Model.SetActive(true);
+            player2Model.SetActive(false);
+        } else
+        {
+            // set to player 2 model.
+            player1Model.SetActive(false);
+            player2Model.SetActive(true);
+        }
     }
 
     public void PlayerLeft(PlayerRef player)

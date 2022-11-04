@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7067625225386750699}
   - component: {fileID: 2329636511234847547}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4031512179389026904}
   - component: {fileID: 7310809076199823426}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 3226168333049642188}
   - component: {fileID: 8643359752068484597}
   - component: {fileID: 6774139327019736478}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flashlight_Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,6 +597,10 @@ PrefabInstance:
       value: flashlight_off
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c9026ad0984f2834687843bdc4ea572f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c9026ad0984f2834687843bdc4ea572f, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -677,6 +681,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 517d9e7917b6cbd4894f4b58e6105ae3, type: 3}
       propertyPath: m_Name
       value: flashlight_on
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 517d9e7917b6cbd4894f4b58e6105ae3, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 517d9e7917b6cbd4894f4b58e6105ae3, type: 3}

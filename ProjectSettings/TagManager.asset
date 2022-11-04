@@ -15,9 +15,9 @@ TagManager:
   - UI
   - Ground
   - LocalPlayerModel
-  - ItemModelLayer
+  - ItemObjectLayer
   - NetworkedHitbox
-  - 
+  - IgnoreItemCollision
   - 
   - 
   - 

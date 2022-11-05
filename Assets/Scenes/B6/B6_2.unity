@@ -184,7 +184,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: d3287917a96e31f4a81b3e9b83fc86e3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -661,7 +661,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: d3287917a96e31f4a81b3e9b83fc86e3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1138,7 +1138,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: d3287917a96e31f4a81b3e9b83fc86e3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1451,7 +1451,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b567cce51a8f5da42befa8ef53f69151, type: 2}
+  - {fileID: 2100000, guid: 904644ac3fa602347ab7c05d4d7d479c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2235,7 +2235,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: 8ee2337025dbea941af92e22a4e1d95b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2548,7 +2548,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: d3287917a96e31f4a81b3e9b83fc86e3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2835,7 +2835,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -3462,6 +3462,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerChr
       objectReference: {fileID: 0}
+    - target: {fileID: 139417697403144896, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 446687774794364821, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
       propertyPath: Flags
       value: 133633
@@ -3529,6 +3533,10 @@ PrefabInstance:
     - target: {fileID: 2108798928755694484, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: 6037328452330843069
+      objectReference: {fileID: 0}
+    - target: {fileID: 2603205491383423994, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3246018709692608774, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
       propertyPath: Flags

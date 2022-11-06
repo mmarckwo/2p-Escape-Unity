@@ -37,6 +37,7 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft, IPlayerJoined
 
         // make it easier to tell which player is which.
         transform.name = $"Player_{Object.Id}";
+        DontDestroyOnLoad(this);
     }
 
     public void PlayerJoined(PlayerRef player)

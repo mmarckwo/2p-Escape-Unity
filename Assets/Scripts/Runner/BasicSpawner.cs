@@ -18,17 +18,22 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     CharacterInputHandler characterInputHandler;
 
+    [SerializeField]
+    private NetworkPlayer player1;
+    [SerializeField]
+    private NetworkPlayer player2;
+
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
     {
         if (runner.IsServer && _spawnCount == 0)
         {
-            runner.Spawn(_playerPrefab, new Vector3(p1SpawnPoint.position.x, p1SpawnPoint.position.y, p1SpawnPoint.position.z), Quaternion.identity, player);
+            player1 = runner.Spawn(_playerPrefab, new Vector3(p1SpawnPoint.position.x, p1SpawnPoint.position.y, p1SpawnPoint.position.z), Quaternion.identity, player);
 
             _spawnCount = 1;
         } 
         else if (runner.IsServer && _spawnCount == 1)
         {
-            runner.Spawn(_playerPrefab, new Vector3(p2SpawnPoint.position.x, p2SpawnPoint.position.y, p2SpawnPoint.position.z), Quaternion.identity, player);
+            player2 = runner.Spawn(_playerPrefab, new Vector3(p2SpawnPoint.position.x, p2SpawnPoint.position.y, p2SpawnPoint.position.z), Quaternion.identity, player);
         }
     }
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) {}
@@ -55,8 +60,32 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
-    public void OnSceneLoadDone(NetworkRunner runner) { }
-    public void OnSceneLoadStart(NetworkRunner runner) { }
+    public void OnSceneLoadDone(NetworkRunner runner) {
+        Debug.Log("Scenes switched.");
+        if (!runner.IsServer) return;
+
+        try
+        {
+            Transform p1SpawnPoint = GameObject.FindGameObjectWithTag("P1Spawn").GetComponent<Transform>();
+            player1.gameObject.GetComponent<CharacterController>().enabled = false;
+            player1.gameObject.transform.position = p1SpawnPoint.transform.position;
+            player1.gameObject.GetComponent<CharacterController>().enabled = true;
+        } catch (Exception)
+        {}
+
+        try
+        {
+            Transform p2SpawnPoint = GameObject.FindGameObjectWithTag("P2Spawn").GetComponent<Transform>();
+            player2.gameObject.GetComponent<CharacterController>().enabled = false;
+            player2.gameObject.transform.position = p2SpawnPoint.transform.position;
+            player2.gameObject.GetComponent<CharacterController>().enabled = true;
+        }
+        catch (Exception)
+        {}
+    }
+    public void OnSceneLoadStart(NetworkRunner runner) {
+        Debug.Log("Switching scenes...");
+    }
 
     private NetworkRunner _runner;
 

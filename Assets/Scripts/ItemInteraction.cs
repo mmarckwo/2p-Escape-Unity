@@ -17,7 +17,6 @@ public class ItemInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.gameObject.tag == "Player")
         {
             // if inventory is full (true), do not collect and destroy item.

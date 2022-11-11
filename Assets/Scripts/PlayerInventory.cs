@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using Fusion;
 
 public class PlayerInventory : NetworkBehaviour
@@ -11,12 +13,14 @@ public class PlayerInventory : NetworkBehaviour
 
     private PlayerScript playerScript;
 
+    [SerializeField]
     private string[] inventory = new string[2] {"", ""};
     [Networked(OnChanged = nameof(OnHoldChanged))]
     public string networkedInventory { get; set; }
 
     private int itemSelect = 0; // item 1 held by default. 
     public float throwSpeed = 12f;
+    TickTimer pickupCooldownTimer = TickTimer.None;
     private bool onPickupCooldown = false;
 
     public GameObject Flashlight;
@@ -30,6 +34,18 @@ public class PlayerInventory : NetworkBehaviour
     private GameObject umbrellaHold;
     private GameObject hammerHold;
     private GameObject teleporterHold;
+
+    [Header("UI")]
+    public Image inventorySlotImg1;
+    public Image inventorySlotImg2;
+    public TMP_Text slot1Text;
+    public TMP_Text slot2Text;
+
+    public Sprite flashlightSprite;
+    public Sprite umbrellaSprite;
+    public Sprite hammerSprite;
+    public Sprite teleporterSprite;
+    public Sprite noneSprite;
 
     void Awake()
     {
@@ -51,13 +67,22 @@ public class PlayerInventory : NetworkBehaviour
             if (networkInputData.isFirstItemButtonPressed)
             {
                 itemSelect = 0;
+
+                slot1Text.fontStyle = FontStyles.Bold | FontStyles.Italic;
+                slot2Text.fontStyle = FontStyles.Normal;
+
                 HoldItem(inventory[itemSelect]);
             }
 
             if (networkInputData.isSecondItemButtonPressed)
             {
                 itemSelect = 1;
+
+                slot2Text.fontStyle = FontStyles.Bold | FontStyles.Italic;
+                slot1Text.fontStyle = FontStyles.Normal;
+
                 HoldItem(inventory[itemSelect]);
+                
             }
 
             // use item selected at slot.
@@ -73,6 +98,12 @@ public class PlayerInventory : NetworkBehaviour
             {
                 flashlightHold.transform.rotation = Quaternion.LookRotation(networkInputData.aimForwardVector);
             }
+        }
+
+        if (pickupCooldownTimer.ExpiredOrNotRunning(Runner))
+        {
+            onPickupCooldown = false;
+            pickupCooldownTimer = TickTimer.None;
         }
     }
 
@@ -129,6 +160,8 @@ public class PlayerInventory : NetworkBehaviour
 
     void ThrowItem(string itemName, int index, Vector3 aimForwardVector)
     {
+        inventory[index] = "";
+        networkedInventory = "";
         if (!Object.HasStateAuthority) return;
 
         if (itemName == "")
@@ -173,11 +206,14 @@ public class PlayerInventory : NetworkBehaviour
                 });
             }
 
-            inventory[index] = "";
-            networkedInventory = "";
+            //inventory[index] = "";
+            //networkedInventory = "";
+            //setInventoryUI(index, "");
 
             // when a player throws an item, they can't pick up their own item immediately or hold. 
-            StartCoroutine(pickupCooldown(0.2f));
+            //StartCoroutine(pickupCooldown(0.2f));
+            onPickupCooldown = true;
+            pickupCooldownTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
         }
 
     }
@@ -224,19 +260,88 @@ public class PlayerInventory : NetworkBehaviour
         if (inventory[0] == "")
         {
             inventory[0] = itemName;
+            setInventoryUI(0, itemName);
             //networkedInventory = inventory[0];
             return false;
         }
-
-        // if slot 2 is empty, put the item in slot 2. 
-        if (inventory[1] == "")
+        // if slot 2 is empty, put the item in slot 2.
+        else if (inventory[1] == "")
         {
             inventory[1] = itemName;
+            setInventoryUI(1, itemName);
+
+            checkDuplicate(itemName);
+            
             //networkedInventory = inventory[1];
             return false;
         }
 
         return true;
+    }
+
+    void checkDuplicate(string itemName)
+    {
+        // TEST TO SEE IF THIS WORKS.
+        if (!Object.HasInputAuthority) return;
+
+        // check for collision duplication on client.
+        if (inventory[0] == inventory[1])
+        {
+            inventory[0] = itemName;
+            inventory[1] = "";
+            setInventoryUI(0, itemName);
+            setInventoryUI(1, "");
+        }
+    }
+
+    void setInventoryUI(int index, string itemName)
+    {
+        if (index == 0)
+        {
+            if (itemName == "Flashlight")
+            {
+                inventorySlotImg1.GetComponent<Image>().sprite = flashlightSprite;
+            } 
+            else if (itemName == "Umbrella")
+            {
+                inventorySlotImg1.GetComponent<Image>().sprite = umbrellaSprite;
+            } 
+            else if (itemName == "Hammer")
+            {
+                inventorySlotImg1.GetComponent<Image>().sprite = hammerSprite;
+            } 
+            else if (itemName == "Teleporter")
+            {
+                inventorySlotImg1.GetComponent<Image>().sprite = teleporterSprite;
+            }
+            else if (itemName == "")
+            {
+                inventorySlotImg1.GetComponent<Image>().sprite = noneSprite;
+            }
+        } 
+        else if (index == 1)
+        {
+            if (itemName == "Flashlight")
+            {
+                inventorySlotImg2.GetComponent<Image>().sprite = flashlightSprite;
+            }
+            else if (itemName == "Umbrella")
+            {
+                inventorySlotImg2.GetComponent<Image>().sprite = umbrellaSprite;
+            }
+            else if (itemName == "Hammer")
+            {
+                inventorySlotImg2.GetComponent<Image>().sprite = hammerSprite;
+            }
+            else if (itemName == "Teleporter")
+            {
+                inventorySlotImg2.GetComponent<Image>().sprite = teleporterSprite;
+            }
+            else if (itemName == "")
+            {
+                inventorySlotImg2.GetComponent<Image>().sprite = noneSprite;
+            }
+        }
     }
 
     void StopHolding()
@@ -256,6 +361,8 @@ public class PlayerInventory : NetworkBehaviour
         if (itemName == "") 
         {
             networkedInventory = "";
+            slot1Text.fontStyle = FontStyles.Normal;
+            slot2Text.fontStyle = FontStyles.Normal;
             return;
         } 
 
@@ -287,6 +394,9 @@ public class PlayerInventory : NetworkBehaviour
         if (changed.Behaviour.networkedInventory == "")
         {
             changed.Behaviour.StopHolding();
+            changed.Behaviour.setInventoryUI(changed.Behaviour.itemSelect, changed.Behaviour.networkedInventory);
+            changed.Behaviour.slot1Text.fontStyle = FontStyles.Normal;
+            changed.Behaviour.slot2Text.fontStyle = FontStyles.Normal;
             return;
         }
 
@@ -313,10 +423,10 @@ public class PlayerInventory : NetworkBehaviour
         }
     }
 
-    IEnumerator pickupCooldown(float timer)
-    {
-        onPickupCooldown = true;
-        yield return new WaitForSeconds(timer);
-        onPickupCooldown = false;
-    }
+    //IEnumerator pickupCooldown(float timer)
+    //{
+    //    onPickupCooldown = true;
+    //    yield return new WaitForSeconds(timer);
+    //    onPickupCooldown = false;
+    //}
 }

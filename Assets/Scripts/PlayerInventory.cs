@@ -17,6 +17,12 @@ public class PlayerInventory : NetworkBehaviour
     private string[] inventory = new string[2] {"", ""};
     [Networked(OnChanged = nameof(OnHoldChanged))]
     public string networkedInventory { get; set; }
+    [Networked]
+    private string itemToAdd { get; set; }
+    [Networked]
+    private int slotToAdd { get; set; }
+    [Networked(OnChanged = nameof(OnSlotAddChange))]
+    private bool toggleInventoryAddition { get; set; }
 
     private int itemSelect = 0; // item 1 held by default. 
     public float throwSpeed = 12f;
@@ -160,8 +166,10 @@ public class PlayerInventory : NetworkBehaviour
 
     void ThrowItem(string itemName, int index, Vector3 aimForwardVector)
     {
-        inventory[index] = "";
-        networkedInventory = "";
+        //inventory[index] = "";
+        //networkedInventory = "";
+        //onPickupCooldown = true;
+        //checkDuplicate(itemName);
         if (!Object.HasStateAuthority) return;
 
         if (itemName == "")
@@ -207,7 +215,11 @@ public class PlayerInventory : NetworkBehaviour
             }
 
             //inventory[index] = "";
-            //networkedInventory = "";
+
+            slotToAdd = index;
+            itemToAdd = "";
+            toggleInventoryAddition = !toggleInventoryAddition;
+            networkedInventory = "";
             //setInventoryUI(index, "");
 
             // when a player throws an item, they can't pick up their own item immediately or hold. 
@@ -259,18 +271,26 @@ public class PlayerInventory : NetworkBehaviour
         // if slot 1 is empty, put the item in slot 1. 
         if (inventory[0] == "")
         {
-            inventory[0] = itemName;
-            setInventoryUI(0, itemName);
+            //inventory[0] = itemName;
+            //setInventoryUI(0, itemName);
+            slotToAdd = 0;
+            itemToAdd = itemName;
+            toggleInventoryAddition = !toggleInventoryAddition;
+
             //networkedInventory = inventory[0];
             return false;
         }
         // if slot 2 is empty, put the item in slot 2.
         else if (inventory[1] == "")
         {
-            inventory[1] = itemName;
-            setInventoryUI(1, itemName);
+            //inventory[1] = itemName;
+            //setInventoryUI(1, itemName);
 
-            checkDuplicate(itemName);
+            slotToAdd = 1;
+            itemToAdd = itemName;
+            toggleInventoryAddition = !toggleInventoryAddition;
+
+            //checkDuplicate(itemName);
             
             //networkedInventory = inventory[1];
             return false;
@@ -279,19 +299,10 @@ public class PlayerInventory : NetworkBehaviour
         return true;
     }
 
-    void checkDuplicate(string itemName)
+    static void OnSlotAddChange(Changed<PlayerInventory> changed)
     {
-        // TEST TO SEE IF THIS WORKS.
-        if (!Object.HasInputAuthority) return;
-
-        // check for collision duplication on client.
-        if (inventory[0] == inventory[1])
-        {
-            inventory[0] = itemName;
-            inventory[1] = "";
-            setInventoryUI(0, itemName);
-            setInventoryUI(1, "");
-        }
+        changed.Behaviour.inventory[changed.Behaviour.slotToAdd] = changed.Behaviour.itemToAdd;
+        changed.Behaviour.setInventoryUI(changed.Behaviour.slotToAdd, changed.Behaviour.itemToAdd);
     }
 
     void setInventoryUI(int index, string itemName)
@@ -394,9 +405,9 @@ public class PlayerInventory : NetworkBehaviour
         if (changed.Behaviour.networkedInventory == "")
         {
             changed.Behaviour.StopHolding();
-            changed.Behaviour.setInventoryUI(changed.Behaviour.itemSelect, changed.Behaviour.networkedInventory);
-            changed.Behaviour.slot1Text.fontStyle = FontStyles.Normal;
-            changed.Behaviour.slot2Text.fontStyle = FontStyles.Normal;
+            //changed.Behaviour.setInventoryUI(changed.Behaviour.itemSelect, changed.Behaviour.networkedInventory);
+            //changed.Behaviour.slot1Text.fontStyle = FontStyles.Normal;
+            //changed.Behaviour.slot2Text.fontStyle = FontStyles.Normal;
             return;
         }
 
@@ -419,6 +430,15 @@ public class PlayerInventory : NetworkBehaviour
         {
             changed.Behaviour.StopHolding();
             changed.Behaviour.teleporterHold.GetComponent<Teleporter_USE>().networkStatusObj = GameObject.FindGameObjectWithTag("Portal");
+
+            // (this fixes a specific scenario)
+            // run this twice because it corrects the color the client sees the host holding
+            // when the client first sets a portal down
+            // and gives the teleporter to the host
+            // without the host having set down a portal first.
+            changed.Behaviour.teleporterHold.GetComponent<Teleporter_USE>().toggleSearch = !changed.Behaviour.teleporterHold.GetComponent<Teleporter_USE>().toggleSearch;
+            changed.Behaviour.teleporterHold.GetComponent<Teleporter_USE>().toggleSearch = !changed.Behaviour.teleporterHold.GetComponent<Teleporter_USE>().toggleSearch;
+
             changed.Behaviour.teleporterHold.SetActive(true);
         }
     }

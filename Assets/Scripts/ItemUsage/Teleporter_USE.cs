@@ -22,6 +22,8 @@ public class Teleporter_USE : NetworkBehaviour
     public bool networkStatus { get; set; }
 
     [Networked(OnChanged = nameof(onFoundPortalObj))]
+    public bool toggleSearch { get; set; }
+    [Networked]
     public bool networkStatusObj { get; set; }
 
     private void Awake()
@@ -60,16 +62,19 @@ public class Teleporter_USE : NetworkBehaviour
             foundPortal = true;
 
             networkStatusObj = false;
+            toggleSearch = !toggleSearch;
             networkStatus = !networkStatus;
 
             return;
         }
 
         foundPortal = false;
+        
 
         Runner.Spawn(portal, playerPosition, Quaternion.identity);
 
         networkStatusObj = true;
+        toggleSearch = !toggleSearch;
 
         return;
     }
@@ -96,6 +101,7 @@ public class Teleporter_USE : NetworkBehaviour
     {
         if (changed.Behaviour.networkStatusObj == true)
         {
+            //Debug.Log("TRUE, ORANGE1")
             changed.Behaviour.placePortalObj.SetActive(false);
             changed.Behaviour.readyPortalObj.SetActive(true);
         } else

@@ -13,6 +13,8 @@ public class PlayerInventory : NetworkBehaviour
 
     private PlayerScript playerScript;
 
+    public GameObject lockedKeyDoor;
+
     [SerializeField]
     private string[] inventory = new string[2] {"", ""};
     [Networked(OnChanged = nameof(OnHoldChanged))]
@@ -35,11 +37,13 @@ public class PlayerInventory : NetworkBehaviour
     public GameObject Hammer;
     public GameObject Teleporter;
     public GameObject portal;
+    public GameObject Key;
 
     private GameObject flashlightHold;
     private GameObject umbrellaHold;
     private GameObject hammerHold;
     private GameObject teleporterHold;
+    private GameObject keyHold;
 
     [Header("UI")]
     public Image inventorySlotImg1;
@@ -51,6 +55,7 @@ public class PlayerInventory : NetworkBehaviour
     public Sprite umbrellaSprite;
     public Sprite hammerSprite;
     public Sprite teleporterSprite;
+    public Sprite keySprite;
     public Sprite noneSprite;
 
     void Awake()
@@ -59,6 +64,7 @@ public class PlayerInventory : NetworkBehaviour
         umbrellaHold = this.transform.GetChild(3).GetChild(1).gameObject;
         hammerHold = this.transform.GetChild(3).GetChild(2).gameObject;
         teleporterHold = this.transform.GetChild(3).GetChild(3).gameObject;
+        keyHold = this.transform.GetChild(3).GetChild(4).gameObject;
 
         // get playerscript to change umbrella float. 
         playerScript = gameObject.GetComponent<PlayerScript>();
@@ -162,6 +168,25 @@ public class PlayerInventory : NetworkBehaviour
             teleporterHold.GetComponent<Teleporter_USE>().useTeleporter(this.gameObject, transform.position);
             return; 
         }
+
+        if (itemName == "Key")
+        {
+            if (keyHold.activeInHierarchy == false) return;
+            // if the player uses the key and there is an object assigned to lockedKeyDoor and if lockedKeyDoor is awaiting for a key to be used. 
+            if (keyHold.GetComponent<Key_USE>().useKey() && (lockedKeyDoor ?? false) && lockedKeyDoor.GetComponent<LockedKeyDoor>().awaitForKey) 
+            {
+                lockedKeyDoor.GetComponent<LockedKeyDoor>().doorStatus = !lockedKeyDoor.GetComponent<LockedKeyDoor>().doorStatus;
+                lockedKeyDoor = null;
+
+                slotToAdd = itemSelect;
+                itemToAdd = "";
+                toggleInventoryAddition = !toggleInventoryAddition;
+                networkedInventory = "";
+
+                // remove UI text?
+            };
+            return;
+        }
     }
 
     void ThrowItem(string itemName, int index, Vector3 aimForwardVector)
@@ -211,6 +236,13 @@ public class PlayerInventory : NetworkBehaviour
 
                 Runner.Spawn(Teleporter, transform.position + transform.forward, Quaternion.LookRotation(aimForwardVector), Object.InputAuthority, (runner, o) => {
                     o.GetComponent<Teleporter_USE>().Init(throwSpeed);
+                });
+            }
+
+            if (itemName == "Key")
+            {
+                Runner.Spawn(Key, transform.position + transform.forward, Quaternion.LookRotation(aimForwardVector), Object.InputAuthority, (runner, o) => {
+                    o.GetComponent<Key_USE>().Init(throwSpeed);
                 });
             }
 
@@ -325,9 +357,14 @@ public class PlayerInventory : NetworkBehaviour
             {
                 inventorySlotImg1.GetComponent<Image>().sprite = teleporterSprite;
             }
+            else if (itemName == "Key")
+            {
+                inventorySlotImg1.GetComponent<Image>().sprite = keySprite;
+            }
             else if (itemName == "")
             {
                 inventorySlotImg1.GetComponent<Image>().sprite = noneSprite;
+                slot1Text.fontStyle = FontStyles.Normal;
             }
         } 
         else if (index == 1)
@@ -348,9 +385,14 @@ public class PlayerInventory : NetworkBehaviour
             {
                 inventorySlotImg2.GetComponent<Image>().sprite = teleporterSprite;
             }
+            else if (itemName == "Key")
+            {
+                inventorySlotImg2.GetComponent<Image>().sprite = keySprite;
+            }
             else if (itemName == "")
             {
                 inventorySlotImg2.GetComponent<Image>().sprite = noneSprite;
+                slot2Text.fontStyle = FontStyles.Normal;
             }
         }
     }
@@ -361,6 +403,7 @@ public class PlayerInventory : NetworkBehaviour
         umbrellaHold.SetActive(false);
         hammerHold.SetActive(false);
         teleporterHold.SetActive(false);
+        keyHold.SetActive(false);
 
         // reset umbrella float since player isn't holding anything. 
         playerScript.umbrellaFloat = 1;
@@ -396,6 +439,11 @@ public class PlayerInventory : NetworkBehaviour
         if (itemName == "Teleporter")
         {
             networkedInventory = "Teleporter";
+        }
+
+        if (itemName == "Key")
+        {
+            networkedInventory = "Key";
         }
     }
 
@@ -440,6 +488,12 @@ public class PlayerInventory : NetworkBehaviour
             changed.Behaviour.teleporterHold.GetComponent<Teleporter_USE>().toggleSearch = !changed.Behaviour.teleporterHold.GetComponent<Teleporter_USE>().toggleSearch;
 
             changed.Behaviour.teleporterHold.SetActive(true);
+        }
+
+        if (changed.Behaviour.networkedInventory == "Key")
+        {
+            changed.Behaviour.StopHolding();
+            changed.Behaviour.keyHold.SetActive(true);
         }
     }
 

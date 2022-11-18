@@ -79,6 +79,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             player2.gameObject.GetComponent<CharacterController>().enabled = false;
             player2.gameObject.transform.position = p2SpawnPoint.transform.position;
             player2.gameObject.GetComponent<CharacterController>().enabled = true;
+
+            // then remove load screen and enable controls on both players?
         }
         catch (Exception)
         {}

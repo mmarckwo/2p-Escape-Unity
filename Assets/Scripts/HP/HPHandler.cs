@@ -23,12 +23,6 @@ public class HPHandler : NetworkBehaviour
 
     bool isInit = false;
 
-
-    private void Awake()
-    {
-
-    }
-
     void Start()
     {
         isDead = false;

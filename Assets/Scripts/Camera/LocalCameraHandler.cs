@@ -41,7 +41,7 @@ public class LocalCameraHandler : MonoBehaviour
 
         // calculate rotation
         cameraRotationX += viewInput.y * Time.deltaTime * networkCharacterControllerPrototypeCustom.viewYRotationSpeed;
-        cameraRotationX = Mathf.Clamp(cameraRotationX, -90, 90);
+        cameraRotationX = Mathf.Clamp(cameraRotationX, -89.9f, 89.9f);
 
         cameraRotationY += viewInput.x * Time.deltaTime * networkCharacterControllerPrototypeCustom.rotationSpeed;
 

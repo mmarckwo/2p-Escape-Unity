@@ -10,14 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 5133617396928096182}
   - component: {fileID: 2489232228210843906}
-  - component: {fileID: 2166428349450557318}
   m_Layer: 0
   m_Name: PlayerDetectorVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5133617396928096182
 Transform:
   m_ObjectHideFlags: 0
@@ -45,21 +44,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.5, z: 2.5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2166428349450557318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2412230449267763406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6874054823beb3642aaebfc5df98c929, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
-  SceneRef: 
-  buttons: []
 --- !u!1 &5707243795388010204
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,9 +56,9 @@ GameObject:
   - component: {fileID: 6309902140250973136}
   - component: {fileID: 6425914809902792026}
   - component: {fileID: 2077591171643427328}
-  - component: {fileID: 2515558019443222261}
+  - component: {fileID: 4508051897177905676}
   m_Layer: 0
-  m_Name: Door
+  m_Name: DoorToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 5707243795388010204}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 3, y: 4, z: 1}
   m_Children:
   - {fileID: 7863795170250114550}
   - {fileID: 5133617396928096182}
@@ -123,7 +107,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f2ffd3ba961dc2345a619226b7ed9da9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -158,7 +142,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2515558019443222261
+--- !u!114 &4508051897177905676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,10 +161,9 @@ MonoBehaviour:
   AoiPositionSource: {fileID: 0}
   Flags: 2305
   NetworkGuid:
-    RawGuidValue: 17839f054c26ff44fa00c7c726279ab8
+    RawGuidValue: 150b0dd6e2905604aa89f3eb62941e62
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 2166428349450557318}
+  NetworkedBehaviours: []
   SimulationBehaviours: []
 --- !u!1 &8294486847838569003
 GameObject:

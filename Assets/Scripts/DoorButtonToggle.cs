@@ -10,6 +10,8 @@ public class DoorButtonToggle : NetworkBehaviour
 
     public bool buttonStatus = false;
 
+    public GameObject doorToggle;
+
     [Networked(OnChanged = nameof(onToggleButton))]
     private bool networkStatus { get; set; }
 
@@ -29,10 +31,22 @@ public class DoorButtonToggle : NetworkBehaviour
         {
             changed.Behaviour.offButton.SetActive(true);
             changed.Behaviour.onButton.SetActive(false);
+
+            // if there is a door to toggle, then set it to inactive.
+            if (changed.Behaviour.doorToggle ?? false)
+            {
+                changed.Behaviour.doorToggle.SetActive(false);
+            }
         } else
         {
             changed.Behaviour.offButton.SetActive(false);
             changed.Behaviour.onButton.SetActive(true);
+
+            // if there is a door to toggle, then set it to active.
+            if (changed.Behaviour.doorToggle ?? false)
+            {
+                changed.Behaviour.doorToggle.SetActive(true);
+            }
         }
     }
 }

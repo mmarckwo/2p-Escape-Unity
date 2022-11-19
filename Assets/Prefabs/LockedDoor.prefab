@@ -43,7 +43,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 1.5, y: 1.5, z: 2.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4638033441405187705
 MonoBehaviour:
@@ -58,7 +58,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  door: {fileID: 6447070984924480032}
+  awaitForKey: 0
+  _doorStatus: 0
 --- !u!1 &5789738931844890260
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +184,7 @@ Transform:
   m_GameObject: {fileID: 8432588646019838232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 4, z: 1}
   m_Children:
   - {fileID: 8039680811484953014}
   - {fileID: 8394735701163938823}

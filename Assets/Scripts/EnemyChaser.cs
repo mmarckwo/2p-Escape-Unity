@@ -16,8 +16,16 @@ public class EnemyChaser : NetworkBehaviour
         Chaser = GetComponentInParent<NavMeshAgent>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
+        if (!Runner.IsServer) return;
+
+        // costly to run this per overlapping frame. is the above line is more efficient? 
+        //if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
+
+        // if there is already a player being chased, continue chasing that player.
+        if (Player) return;
+
         if (other.gameObject.tag == "Player")
         {
             Player = other.gameObject;
@@ -26,15 +34,19 @@ public class EnemyChaser : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
+
+        if (other.gameObject.tag == "Player")
         {
             Player = null;
         }
     }
 
     // Update is called once per frame
-    void Update()
+    public override void FixedUpdateNetwork()
     {
+        if (!Runner.IsServer) return;
+
         if (!Player) return;
 
         Vector3 directionToPlayer = transform.position - Player.transform.position;

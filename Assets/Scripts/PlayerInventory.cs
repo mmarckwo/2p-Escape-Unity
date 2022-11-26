@@ -157,7 +157,6 @@ public class PlayerInventory : NetworkBehaviour
 
         if (itemName == "Hammer")
         {
-            Debug.Log("use hammer");
             return; 
         }
 
@@ -225,9 +224,9 @@ public class PlayerInventory : NetworkBehaviour
 
             if (itemName == "Hammer")
             {
-                GameObject ThrownItem = Instantiate(Hammer, transform.position + transform.forward, playerCam.transform.rotation);
-
-                ThrownItem.GetComponent<Rigidbody>().AddRelativeForce(0, 0, throwSpeed, ForceMode.Impulse);
+                Runner.Spawn(Hammer, transform.position + transform.forward, Quaternion.LookRotation(aimForwardVector), Object.InputAuthority, (runner, o) => {
+                    o.GetComponent<Hammer_USE>().Init(throwSpeed);
+                });
             }
 
             if (itemName == "Teleporter")
@@ -473,6 +472,12 @@ public class PlayerInventory : NetworkBehaviour
         }
 
         // HAMMER HERE.
+
+        if (changed.Behaviour.networkedInventory == "Hammer")
+        {
+            changed.Behaviour.StopHolding();
+            changed.Behaviour.hammerHold.SetActive(true);
+        }
 
         if (changed.Behaviour.networkedInventory == "Teleporter")
         {

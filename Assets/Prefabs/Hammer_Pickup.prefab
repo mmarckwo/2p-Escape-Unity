@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 4251002892962677282}
   - component: {fileID: 1945202567089872086}
   - component: {fileID: 4255169882402302472}
+  - component: {fileID: 1356215234652935601}
   m_Layer: 0
   m_Name: Hammer_Pickup
   m_TagString: Untagged
@@ -417,7 +418,21 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 4251002892962677282}
   - {fileID: 1945202567089872086}
+  - {fileID: 1356215234652935601}
   SimulationBehaviours: []
+--- !u!114 &1356215234652935601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8624675278913786648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5358fa3a52a291d40ae232395bc7dd04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!1001 &2091217178281175432
 PrefabInstance:
   m_ObjectHideFlags: 0

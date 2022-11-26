@@ -12,16 +12,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
     public Transform p1SpawnPoint;
-    public Transform p2SpawnPoint; 
+    public Transform p2SpawnPoint;
 
     private int _spawnCount = 0;
 
     CharacterInputHandler characterInputHandler;
 
-    [SerializeField]
-    private NetworkPlayer player1;
-    [SerializeField]
-    private NetworkPlayer player2;
+    private NetworkPlayer player1 { get; set; }
+    private NetworkPlayer player2 { get; set; }
+
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
     {
@@ -62,6 +61,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
     public void OnSceneLoadDone(NetworkRunner runner) {
         Debug.Log("Scenes switched.");
+
         if (!runner.IsServer) return;
 
         try
@@ -121,5 +121,4 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             }
         }
     }
-
 }

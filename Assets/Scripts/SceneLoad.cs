@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using TMPro;
 
 public class SceneLoad : NetworkBehaviour
 {
@@ -13,6 +14,19 @@ public class SceneLoad : NetworkBehaviour
     [Networked(OnChanged = nameof(OnVolumeCheckMinus))]
     private bool networkStatusMinus { get; set; }
 
+    [Networked(OnChanged = nameof(OnMessageUpdate))]
+    private bool networkMessage { get; set; }
+
+    [Networked(OnChanged = nameof(OnMessageClear))]
+    private bool networkMessageClear { get; set; }
+
+    [Networked]
+    private string reasonTextA { get; set; }
+    [Networked]
+    private string reasonTextB { get; set; }
+    [Networked]
+    private string reasonTextC { get; set; }
+
     private int playerCount = 0;
 
     // controls whether playerCount can be changed or not by entering and exiting volume.
@@ -20,9 +34,17 @@ public class SceneLoad : NetworkBehaviour
 
     private bool isAlreadyOverlapping = false;
 
+    private GameObject playerRef;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag != "Player") return;
+
+        if (playerRef == null)
+        {
+            playerRef = other.gameObject;
+        } 
+        
         if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
 
         // if there are buttons that need to be pressed, then check to see if they're all pressed.
@@ -44,13 +66,24 @@ public class SceneLoad : NetworkBehaviour
             {
                 // check if both players are in.
                 ableToCount = true;
+
+                reasonTextA = "Wait for ";
+                reasonTextB = "the other ";
+                reasonTextC = "player.";
+
+                networkMessage = !networkMessage;
+
                 networkStatusPlus = !networkStatusPlus;
             } else
             {
-                Debug.Log("not all buttons have been activated.");
+                reasonTextA = "Not all buttons ";
+                reasonTextB = "have been ";
+                reasonTextC = "activated.";
                 ableToCount = false;
                 isAlreadyOverlapping = true;
-                // do something with ui here. 
+
+                // NETWORKED EVENT
+                networkMessage = !networkMessage;
             }
         }
         // no buttons needed.
@@ -58,6 +91,13 @@ public class SceneLoad : NetworkBehaviour
         {
             // check if both players are in.
             ableToCount = true;
+
+            reasonTextA = "Wait for ";
+            reasonTextB = "the other ";
+            reasonTextC = "player.";
+
+            networkMessage = !networkMessage;
+
             networkStatusPlus = !networkStatusPlus;
         }
     }
@@ -65,7 +105,11 @@ public class SceneLoad : NetworkBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag != "Player") return;
+
         if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
+
+        networkMessageClear = !networkMessageClear;
+
         if (!ableToCount) return;
 
         if (isAlreadyOverlapping)
@@ -74,14 +118,31 @@ public class SceneLoad : NetworkBehaviour
             return;
         }
 
-        // remove UI text? same process for setting text on volume enter?
-
         networkStatusMinus = !networkStatusMinus;
+    }
+
+    static void OnMessageUpdate(Changed<SceneLoad> changed)
+    {
+        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+        notifier.SetActive(true);
+        
+        notifier.GetComponent<TextMeshProUGUI>().text = changed.Behaviour.reasonTextA + changed.Behaviour.reasonTextB + changed.Behaviour.reasonTextC;
+    }
+
+    static void OnMessageClear(Changed<SceneLoad> changed)
+    {
+        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+        notifier.SetActive(false);
+
+        changed.Behaviour.playerRef = null;
     }
 
     static void OnVolumeCheckPlus(Changed<SceneLoad> changed)
     {
         changed.Behaviour.playerCount++;
+
+        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+        notifier.SetActive(false);
 
         if (changed.Behaviour.playerCount == 2)
         {
@@ -92,7 +153,5 @@ public class SceneLoad : NetworkBehaviour
     static void OnVolumeCheckMinus(Changed<SceneLoad> changed)
     {
         changed.Behaviour.playerCount--;
-
-        // clear UI text?
     }
 }

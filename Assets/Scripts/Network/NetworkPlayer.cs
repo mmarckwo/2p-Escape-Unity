@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Fusion;
+using Fusion.Sockets;
 
-public class NetworkPlayer : NetworkBehaviour, IPlayerLeft, IPlayerJoined
+public class NetworkPlayer : NetworkBehaviour, IPlayerLeft, IPlayerJoined, ISceneLoadDone
 {
     public static NetworkPlayer Local { get; set; }
 
@@ -62,5 +65,13 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft, IPlayerJoined
             Runner.Despawn(Object);
     }
 
-
+    public void SceneLoadDone()
+    {
+        try
+        {
+            this.gameObject.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject.SetActive(false);
+        }
+        catch (Exception)
+        { }
+    }
 }

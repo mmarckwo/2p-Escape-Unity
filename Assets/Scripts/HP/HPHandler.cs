@@ -123,7 +123,6 @@ public class HPHandler : NetworkBehaviour
 
         if (isDeadOld)
         {
-
             changed.Behaviour.OnDeath();
         }
             

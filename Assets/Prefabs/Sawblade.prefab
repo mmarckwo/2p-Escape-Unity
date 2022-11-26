@@ -110,6 +110,8 @@ GameObject:
   - component: {fileID: 4174047107255422400}
   - component: {fileID: 1308588847481604964}
   - component: {fileID: 4518900376124410545}
+  - component: {fileID: 7384245327672560460}
+  - component: {fileID: 5260398113762218016}
   m_Layer: 0
   m_Name: Sawblade
   m_TagString: Untagged
@@ -207,6 +209,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd5291694ec70345b24b008380b48c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  turnSpeed: 120
+--- !u!114 &7384245327672560460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653141139987738166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 1
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: ddb2a8af3ffd2f145b9b98165a121d82
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4518900376124410545}
+  - {fileID: 5260398113762218016}
+  SimulationBehaviours: []
+--- !u!114 &5260398113762218016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653141139987738166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 539362646, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!1001 &9036591624049757773
 PrefabInstance:
   m_ObjectHideFlags: 0

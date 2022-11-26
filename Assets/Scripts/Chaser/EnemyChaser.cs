@@ -34,10 +34,10 @@ public class EnemyChaser : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
-
         if (other.gameObject.tag == "Player")
         {
+            if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
+
             Player = null;
         }
     }

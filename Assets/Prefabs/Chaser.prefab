@@ -206,6 +206,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 4994778219154665451}
   - {fileID: 194624776320474832}
+  - {fileID: 2776412586298271308}
   SimulationBehaviours: []
 --- !u!114 &4994778219154665451
 MonoBehaviour:
@@ -260,6 +261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2674404612427418662}
   - component: {fileID: 6451369860099478866}
+  - component: {fileID: 2776412586298271308}
   m_Layer: 0
   m_Name: DamageRadius
   m_TagString: Untagged
@@ -294,3 +296,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 2, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2776412586298271308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8200112714293291989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1eef9600e290645858597b451b0f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0

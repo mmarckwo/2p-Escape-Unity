@@ -205,6 +205,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4994778219154665451}
+  - {fileID: 4690772200517033258}
   - {fileID: 7741887644822894564}
   - {fileID: 194624776320474832}
   - {fileID: 2776412586298271308}
@@ -453,6 +454,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 29ee7fc9095b2714b9b151b73591eb47, type: 3}
   m_PrefabInstance: {fileID: 4684181273351383012}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4690772200517033258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5602732873790020277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 539362646, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!114 &7741887644822894564
 MonoBehaviour:
   m_ObjectHideFlags: 0

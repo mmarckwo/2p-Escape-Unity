@@ -42,7 +42,7 @@ public class SawbladeCollide : NetworkBehaviour
     {
         if (!Runner.IsServer) return;
 
-        transform.Rotate(new Vector3(0, turnSpeed, 0) * Time.deltaTime);
+        transform.Rotate(new Vector3(0, turnSpeed, 0) * Runner.DeltaTime);
 
         // if there is no player inside, do nothing. else, cause a tick of damage.
         if (playerInside == false)

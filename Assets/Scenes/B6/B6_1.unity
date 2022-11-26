@@ -13032,11 +13032,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6587230096237949297, guid: 52cecef35999bfa4fb993122ebf80001, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.218
+      value: 0.576
       objectReference: {fileID: 0}
     - target: {fileID: 6587230096237949297, guid: 52cecef35999bfa4fb993122ebf80001, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.043648
+      value: 4.487
       objectReference: {fileID: 0}
     - target: {fileID: 6587230096237949297, guid: 52cecef35999bfa4fb993122ebf80001, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14451,11 +14451,11 @@ PrefabInstance:
     - target: {fileID: 5607604945715581366, guid: 4923eebc0edddd5429c0d45ba62a573f, type: 3}
       propertyPath: p1SpawnPoint
       value: 
-      objectReference: {fileID: 368742163}
+      objectReference: {fileID: 1389406392}
     - target: {fileID: 5607604945715581366, guid: 4923eebc0edddd5429c0d45ba62a573f, type: 3}
       propertyPath: p2SpawnPoint
       value: 
-      objectReference: {fileID: 1389406392}
+      objectReference: {fileID: 368742163}
     - target: {fileID: 5607604945715581366, guid: 4923eebc0edddd5429c0d45ba62a573f, type: 3}
       propertyPath: _playerPrefab
       value: 
@@ -26132,7 +26132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1122980275281233664, guid: 93a0e4a41c74f6543b70590c39f34c93, type: 3}
       propertyPath: m_Name
-      value: p1spawn
+      value: P1spawn
       objectReference: {fileID: 0}
     - target: {fileID: 1122980275281233679, guid: 93a0e4a41c74f6543b70590c39f34c93, type: 3}
       propertyPath: m_RootOrder
@@ -26189,7 +26189,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4314670934717242646, guid: fe0fbf496420b3a4ca51f5d259ce66e6, type: 3}
       propertyPath: m_Name
-      value: p2spawn
+      value: P2spawn
       objectReference: {fileID: 0}
     - target: {fileID: 4314670934717242647, guid: fe0fbf496420b3a4ca51f5d259ce66e6, type: 3}
       propertyPath: m_RootOrder

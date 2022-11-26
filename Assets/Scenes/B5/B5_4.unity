@@ -3570,6 +3570,18 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: -5603008902779793222
       objectReference: {fileID: 0}
+    - target: {fileID: 7656836266544503538, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
+      propertyPath: Flags
+      value: 133633
+      objectReference: {fileID: 0}
+    - target: {fileID: 7656836266544503538, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
+      propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
+      value: -4807834525324649635
+      objectReference: {fileID: 0}
+    - target: {fileID: 7656836266544503538, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
+      propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
+      value: -9161486808012827992
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4378902a6ba74e846aa6ea3400a13641, type: 3}
 --- !u!43 &2075271934
@@ -3743,6 +3755,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4264833963759604666, guid: da8064a69d6eef34d94dff19619eaacf, type: 3}
+      propertyPath: Flags
+      value: 2561
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264833963759604666, guid: da8064a69d6eef34d94dff19619eaacf, type: 3}
+      propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
+      value: 2757990993880488725
+      objectReference: {fileID: 0}
+    - target: {fileID: 4264833963759604666, guid: da8064a69d6eef34d94dff19619eaacf, type: 3}
+      propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
+      value: -79594588846916715
+      objectReference: {fileID: 0}
     - target: {fileID: 7763585974664506081, guid: da8064a69d6eef34d94dff19619eaacf, type: 3}
       propertyPath: m_Mesh
       value: 

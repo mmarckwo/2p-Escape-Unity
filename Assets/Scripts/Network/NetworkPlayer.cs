@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Fusion;
-using Fusion.Sockets;
 
 public class NetworkPlayer : NetworkBehaviour, IPlayerLeft, IPlayerJoined, ISceneLoadDone
 {

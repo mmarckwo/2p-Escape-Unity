@@ -37,7 +37,7 @@ public class ReloadActionsScript : NetworkBehaviour
         p2Inventory.StopHolding();
 
         // only the host may perform these following actions.
-        if (!Runner.IsServer) return;
+        if (!spawner.GetComponent<NetworkRunner>().IsServer) return;
 
         // clear out player 1's inventory.
         p1Inventory.ForceAddItem("", 0);
@@ -56,6 +56,6 @@ public class ReloadActionsScript : NetworkBehaviour
         p2Inventory.ForceAddItem(itemTracker.expectedItemD, 1);
 
         // finally, reload the scene we were on.
-        Runner.SetActiveScene(player1.GetComponent<PlayerScript>().currentScene);
+        spawner.GetComponent<NetworkRunner>().SetActiveScene(player1.GetComponent<PlayerScript>().currentScene);
     }
 }

@@ -9,6 +9,9 @@ TagManager:
   - P1Spawn
   - P2Spawn
   - Enemy
+  - ExpectedItems
+  - ItemTracker
+  - BasicSpawner
   layers:
   - Default
   - TransparentFX

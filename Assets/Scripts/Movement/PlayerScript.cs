@@ -38,8 +38,10 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
     public bool controlsEnabled { get; set; }
     [Networked]
     private bool enablePausing { get; set; }
-    [SerializeField]
+
     private int enableControllerCounter = 0;
+
+    public string currentScene;
 
     void Awake()
     { 
@@ -189,8 +191,6 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
             count++;
         }
 
-        Debug.Log("active players " + count);
-
         // if there are two player connect to this session, then close the "wait for player" screen.
         if (count == 2) WaitForPlayerClose();
     }
@@ -219,11 +219,11 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
         controlsEnabled = true;
     }
 
-    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
-    public void RPC_RestartRoom()
+    public void RestartRoom()
     {
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadSceneAsync(scene.name);
+        currentScene = SceneManager.GetActiveScene().name;
+
+        Runner.SetActiveScene("ReloadScene");
     }
 
     public void TipMenuClose()
@@ -254,8 +254,6 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
 
             Cursor.lockState = CursorLockMode.Locked;
         };
-
-        Debug.Log(enableControllerCounter);
 
         // when the tip menu has been cleared and a player has joined, enable controls. 
         if (enableControllerCounter == 2)

@@ -332,6 +332,24 @@ public class PlayerInventory : NetworkBehaviour
         return true;
     }
 
+    public void ForceAddItem(string itemName, int addingToSlot)
+    {
+        // force item into slot 1. 
+        if (addingToSlot == 0)
+        {
+            slotToAdd = 0;
+            itemToAdd = itemName;
+            toggleInventoryAddition = !toggleInventoryAddition;
+        }
+        // force item into slot 2.
+        else if (addingToSlot == 1)
+        {
+            slotToAdd = 1;
+            itemToAdd = itemName;
+            toggleInventoryAddition = !toggleInventoryAddition;
+        }
+    }
+
     static void OnSlotAddChange(Changed<PlayerInventory> changed)
     {
         changed.Behaviour.inventory[changed.Behaviour.slotToAdd] = changed.Behaviour.itemToAdd;
@@ -398,7 +416,7 @@ public class PlayerInventory : NetworkBehaviour
         }
     }
 
-    void StopHolding()
+    public void StopHolding()
     {
         flashlightHold.SetActive(false);
         umbrellaHold.SetActive(false);

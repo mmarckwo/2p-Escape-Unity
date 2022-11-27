@@ -12,7 +12,6 @@ public class ItemInteraction : NetworkBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-
             // only the host can watch players collect items.
             if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
 

@@ -129,6 +129,8 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
         // handles local cursor lock state based on if player is paused or not.
         if (!playerNetworkObj.HasInputAuthority) return;
 
+        // get button from pause menu if not state authority set button to disabled?
+
         if (!controlsEnabled)
         {
             Cursor.lockState = CursorLockMode.None;

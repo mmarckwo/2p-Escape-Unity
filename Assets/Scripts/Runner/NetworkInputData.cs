@@ -23,4 +23,5 @@ public struct NetworkInputData : INetworkInput
     public NetworkBool isThrowButtonPressed;
     public NetworkBool isFirstItemButtonPressed;
     public NetworkBool isSecondItemButtonPressed;
+    public NetworkBool isEscButtonPressed;
 }

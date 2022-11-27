@@ -30,8 +30,9 @@ public class NetworkPlayer : NetworkBehaviour, IPlayerLeft, IPlayerJoined, IScen
             AudioListener audioListener = GetComponentInChildren<AudioListener>();
             audioListener.enabled = false;
 
-            Canvas canvas = GetComponentInChildren<Canvas>();
-            canvas.enabled = false;
+            Canvas[] canvases = GetComponentsInChildren<Canvas>();
+
+            foreach (Canvas canvas in canvases) canvas.enabled = false;
 
             Debug.Log("Spawned remote player");
         }

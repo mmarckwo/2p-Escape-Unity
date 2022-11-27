@@ -66,13 +66,15 @@ public class PlayerInventory : NetworkBehaviour
         teleporterHold = this.transform.GetChild(3).GetChild(3).gameObject;
         keyHold = this.transform.GetChild(3).GetChild(4).gameObject;
 
-        // get playerscript to change umbrella float. 
+        // get playerscript to change umbrella float and get control enable state. 
         playerScript = gameObject.GetComponent<PlayerScript>();
 
     }
 
     public override void FixedUpdateNetwork()
     {
+        if (!playerScript.controlsEnabled) return;
+
         // get the input from the network.
         if (GetInput(out NetworkInputData networkInputData))
         {

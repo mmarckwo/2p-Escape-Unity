@@ -16,10 +16,13 @@ public class LocalCameraHandler : MonoBehaviour
     NetworkCharacterControllerPrototypeCustom networkCharacterControllerPrototypeCustom;
     Camera localCamera;
 
+    private PlayerScript playerScript;
+
     private void Awake()
     {
         localCamera = GetComponent<Camera>();
         networkCharacterControllerPrototypeCustom = GetComponentInParent<NetworkCharacterControllerPrototypeCustom>();
+        playerScript = GetComponentInParent<PlayerScript>();
     }
 
     void Start()
@@ -38,6 +41,8 @@ public class LocalCameraHandler : MonoBehaviour
             return;
 
         localCamera.transform.position = cameraAnchorPoint.position;
+
+        if (!playerScript.controlsEnabled) return;
 
         // calculate rotation
         cameraRotationX += viewInput.y * Time.deltaTime * networkCharacterControllerPrototypeCustom.viewYRotationSpeed;

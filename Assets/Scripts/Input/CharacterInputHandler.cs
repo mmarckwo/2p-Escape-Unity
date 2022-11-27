@@ -14,6 +14,8 @@ public class CharacterInputHandler : MonoBehaviour
     bool isUseButtonPressed = false;
     bool isThrowButtonPressed = false;
 
+    bool isPauseButtonPressed = false;
+
     LocalCameraHandler localCameraHandler;
     PlayerScript playerScript;
 
@@ -64,6 +66,10 @@ public class CharacterInputHandler : MonoBehaviour
         if (Input.GetKeyDown("2"))
             isSecondItemButtonPressed = true;
 
+        // pause button.
+        if (Input.GetKeyDown(KeyCode.Escape))
+            isPauseButtonPressed = true;
+
         // set view
         localCameraHandler.SetViewInputVector(viewInputVector);
     }
@@ -93,12 +99,16 @@ public class CharacterInputHandler : MonoBehaviour
         // select item 2 data.
         networkInputData.isSecondItemButtonPressed = isSecondItemButtonPressed;
 
+        // pause button data.
+        networkInputData.isEscButtonPressed = isPauseButtonPressed;
+
         // reset variables after their states have been read.
         isJumpButtonPressed = false;
         isUseButtonPressed = false;
         isThrowButtonPressed = false;
         isFirstItemButtonPressed = false;
         isSecondItemButtonPressed = false;
+        isPauseButtonPressed = false;
 
         return networkInputData;
     }

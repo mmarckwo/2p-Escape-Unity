@@ -24,16 +24,12 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 
     CharacterInputHandler characterInputHandler;
 
-    [SerializeField]
-    private NetworkPlayer player1 { get; set; }
-    [SerializeField]
-    private NetworkPlayer player2 { get; set; }
+    public NetworkPlayer player1 { get; set; }
+    public NetworkPlayer player2 { get; set; }
 
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) 
     {
-        Debug.Log(player);
-
         if (runner.IsServer && _spawnCount == 0)
         {
             player1 = runner.Spawn(_playerPrefab, new Vector3(6.5f, 2f, -1f), Quaternion.identity, player);

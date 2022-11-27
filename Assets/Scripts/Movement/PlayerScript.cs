@@ -252,7 +252,6 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
         {
             if (enableControllerCounter == 1)
             {
-                Debug.Log("hello!");
                 playerGameUI.SetActive(true);
 
                 Cursor.lockState = CursorLockMode.Locked;

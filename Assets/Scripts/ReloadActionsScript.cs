@@ -11,6 +11,10 @@ public class ReloadActionsScript : NetworkBehaviour
     private BasicSpawner spawner;
     private ItemTrackerScript itemTracker;
 
+    private bool sequenceStart = false;
+
+    TickTimer waitToReloadTimer = TickTimer.None;
+
     void Start()
     {
         // get the spawner for player refs. 
@@ -19,12 +23,27 @@ public class ReloadActionsScript : NetworkBehaviour
         // get the item tracker to know what items to add. 
         itemTracker = GameObject.FindGameObjectWithTag("ItemTracker").GetComponent<ItemTrackerScript>();
 
-        // add expected items and reload the previous scene.
-        StartReloadSequence();
+        // wait for a bit.
+        waitToReloadTimer = TickTimer.CreateFromSeconds(spawner.GetComponent<NetworkRunner>(), 2f);
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        if (waitToReloadTimer.ExpiredOrNotRunning(spawner.GetComponent<NetworkRunner>()))
+        {
+            // only call this once.
+            if (sequenceStart) return;
+            sequenceStart = true;
+
+            StartReloadSequence();
+        }
     }
 
     private void StartReloadSequence()
     {
+        // only the host may perform these following actions.
+        if (!spawner.GetComponent<NetworkRunner>().IsServer) return;
+
         player1 = spawner.player1.gameObject;
         player2 = spawner.player2.gameObject;
 
@@ -35,9 +54,6 @@ public class ReloadActionsScript : NetworkBehaviour
         // if any players are holding items, make them stop holding items.
         p1Inventory.StopHolding();
         p2Inventory.StopHolding();
-
-        // only the host may perform these following actions.
-        if (!spawner.GetComponent<NetworkRunner>().IsServer) return;
 
         // clear out player 1's inventory.
         p1Inventory.ForceAddItem("", 0);

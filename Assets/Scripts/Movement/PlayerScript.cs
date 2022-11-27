@@ -250,10 +250,16 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
         // player with input authority but no state authority is the client. enable playerUI on their end.
         else if (playerNetworkObj.HasInputAuthority && !playerNetworkObj.HasStateAuthority)
         {
-            playerGameUI.SetActive(true);
+            if (enableControllerCounter == 1)
+            {
+                Debug.Log("hello!");
+                playerGameUI.SetActive(true);
 
-            Cursor.lockState = CursorLockMode.Locked;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         };
+
+        if (!playerNetworkObj.HasStateAuthority) return;
 
         // when the tip menu has been cleared and a player has joined, enable controls. 
         if (enableControllerCounter == 2)

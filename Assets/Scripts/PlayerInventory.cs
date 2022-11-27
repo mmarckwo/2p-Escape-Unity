@@ -332,7 +332,7 @@ public class PlayerInventory : NetworkBehaviour
         return true;
     }
 
-    public void ForceAddItem(string itemName, int addingToSlot)
+    public bool ForceAddItem(string itemName, int addingToSlot)
     {
         // force item into slot 1. 
         if (addingToSlot == 0)
@@ -348,6 +348,8 @@ public class PlayerInventory : NetworkBehaviour
             itemToAdd = itemName;
             toggleInventoryAddition = !toggleInventoryAddition;
         }
+
+        return true;
     }
 
     static void OnSlotAddChange(Changed<PlayerInventory> changed)

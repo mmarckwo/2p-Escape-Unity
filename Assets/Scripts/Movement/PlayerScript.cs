@@ -224,6 +224,8 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
         currentScene = SceneManager.GetActiveScene().name;
 
         Runner.SetActiveScene("ReloadScene");
+
+        PauseMenuClose();
     }
 
     public void TipMenuClose()

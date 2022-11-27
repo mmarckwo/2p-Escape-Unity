@@ -12,6 +12,14 @@ public class ItemTrackerScript : NetworkBehaviour, ISceneLoadDone
 
     void Start()
     {
+        //GameObject[] itemTrackerDuplicates = GameObject.FindGameObjectsWithTag("ItemTracker");
+
+        //if (itemTrackerDuplicates.Length > 1)
+        //{
+        //    NetworkRunner runner = GameObject.FindGameObjectWithTag("BasicSpawner").GetComponent<NetworkRunner>();
+        //    runner.Despawn(itemTrackerDuplicates[1].gameObject.GetComponent<NetworkObject>());
+        //}
+
         DontDestroyOnLoad(this);
 
         GameObject expectedItemList = GameObject.FindGameObjectWithTag("ExpectedItems");

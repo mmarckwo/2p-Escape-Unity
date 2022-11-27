@@ -922,7 +922,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1757487826442729767, guid: 6993f7e0cb9ab98439f63c8af2c27281, type: 3}
       propertyPath: itemA
-      value: 
+      value: Hammer
       objectReference: {fileID: 0}
     - target: {fileID: 1757487826442729767, guid: 6993f7e0cb9ab98439f63c8af2c27281, type: 3}
       propertyPath: itemB

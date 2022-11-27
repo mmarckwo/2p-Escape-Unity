@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Fusion;
 
@@ -198,7 +199,7 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
     {
         notifyScreen.SetActive(false);
 
-        if (!playerNetworkObj.HasStateAuthority) return;
+        //if (!playerNetworkObj.HasStateAuthority) return;
 
         enableControllerCounter++;
         enablerCounter();
@@ -218,6 +219,13 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
         controlsEnabled = true;
     }
 
+    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+    public void RPC_RestartRoom()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadSceneAsync(scene.name);
+    }
+
     public void TipMenuClose()
     {
         tipMenu.SetActive(false);
@@ -235,21 +243,16 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
         {
             if (enableControllerCounter == 1)
             {
-                Debug.Log("free p2");
                 enablePausing = true;
                 controlsEnabled = true;
             }
+        }
+        // player with input authority but no state authority is the client. enable playerUI on their end.
+        else if (playerNetworkObj.HasInputAuthority && !playerNetworkObj.HasStateAuthority)
+        {
+            playerGameUI.SetActive(true);
 
-            if (!playerNetworkObj.HasInputAuthority)
-            {
-                return;
-            } 
-            else
-            {
-                playerGameUI.SetActive(true);
-
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+            Cursor.lockState = CursorLockMode.Locked;
         };
 
         Debug.Log(enableControllerCounter);

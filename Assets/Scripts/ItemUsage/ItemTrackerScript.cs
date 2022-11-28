@@ -12,13 +12,13 @@ public class ItemTrackerScript : NetworkBehaviour, ISceneLoadDone
 
     void Start()
     {
-        //GameObject[] itemTrackerDuplicates = GameObject.FindGameObjectsWithTag("ItemTracker");
 
-        //if (itemTrackerDuplicates.Length > 1)
-        //{
-        //    NetworkRunner runner = GameObject.FindGameObjectWithTag("BasicSpawner").GetComponent<NetworkRunner>();
-        //    runner.Despawn(itemTrackerDuplicates[1].gameObject.GetComponent<NetworkObject>());
-        //}
+        // if the starting room is reloaded, then only keep track of the first item tracker that spawned when the game first started.
+        GameObject[] itemTrackerDuplicates = GameObject.FindGameObjectsWithTag("ItemTracker");
+        if (itemTrackerDuplicates.Length > 1)
+        {
+            return; 
+        }
 
         DontDestroyOnLoad(this);
 

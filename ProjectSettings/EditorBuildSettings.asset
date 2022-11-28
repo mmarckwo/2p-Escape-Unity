@@ -18,11 +18,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: 8083ed57ed7dc2349b63289f79a0b98c
   - enabled: 1
-    path: Assets/Scenes/B6/B6_1.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
     path: Assets/Scenes/ReloadScene.unity
     guid: 6be455196454ed84d828e2d3a4927d29
+  - enabled: 1
+    path: Assets/Scenes/B6/B6_1.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/B6/B6_2.unity
     guid: bdfd9e87563b9f349a0096f11c41eba9

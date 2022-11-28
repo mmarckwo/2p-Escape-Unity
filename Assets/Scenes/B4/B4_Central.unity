@@ -1292,7 +1292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2166428349450557318, guid: 17839f054c26ff44fa00c7c726279ab8, type: 3}
       propertyPath: SceneRef
-      value: B4_3
+      value: B4_2
       objectReference: {fileID: 0}
     - target: {fileID: 2515558019443222261, guid: 17839f054c26ff44fa00c7c726279ab8, type: 3}
       propertyPath: Flags

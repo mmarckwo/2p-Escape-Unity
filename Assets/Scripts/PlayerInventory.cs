@@ -183,8 +183,6 @@ public class PlayerInventory : NetworkBehaviour
                 itemToAdd = "";
                 toggleInventoryAddition = !toggleInventoryAddition;
                 networkedInventory = "";
-
-                // remove UI text?
             };
             return;
         }

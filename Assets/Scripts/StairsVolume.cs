@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using TMPro;
 
 public class StairsVolume : NetworkBehaviour
 {
@@ -14,10 +15,37 @@ public class StairsVolume : NetworkBehaviour
 
     public string SceneRef;
 
+    private GameObject playerRef;
+
+    [Networked(OnChanged = nameof(OnMessageUpdate))]
+    private bool networkMessage { get; set; }
+
+    [Networked(OnChanged = nameof(OnMessageClear))]
+    private bool networkMessageClear { get; set; }
+
+    [Networked]
+    private string reasonTextA { get; set; }
+    [Networked]
+    private string reasonTextB { get; set; }
+    [Networked]
+    private string reasonTextC { get; set; }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag != "Player") return;
+
+        if (playerRef == null)
+        {
+            playerRef = other.gameObject;
+        }
+
         if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
+
+        reasonTextA = "Wait for ";
+        reasonTextB = "the other ";
+        reasonTextC = "player.";
+
+        networkMessage = !networkMessage;
 
         networkStatusPlus = !networkStatusPlus;
     }
@@ -27,13 +55,32 @@ public class StairsVolume : NetworkBehaviour
         if (other.gameObject.tag != "Player") return;
         if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
 
+        networkMessageClear = !networkMessageClear;
         networkStatusMinus = !networkStatusMinus;
+    }
+
+    static void OnMessageUpdate(Changed<StairsVolume> changed)
+    {
+        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+        notifier.SetActive(true);
+
+        notifier.GetComponent<TextMeshProUGUI>().text = changed.Behaviour.reasonTextA + changed.Behaviour.reasonTextB + changed.Behaviour.reasonTextC;
+    }
+
+    static void OnMessageClear(Changed<StairsVolume> changed)
+    {
+        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+        notifier.SetActive(false);
+
+        changed.Behaviour.playerRef = null;
     }
 
     static void OnStairsCheckPlus(Changed<StairsVolume> changed)
     {
         changed.Behaviour.playerCount++;
-        // show UI text saying wait for other player. 
+
+        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+        notifier.SetActive(false);
 
         if (changed.Behaviour.playerCount == 2)
         {
@@ -44,6 +91,5 @@ public class StairsVolume : NetworkBehaviour
     static void OnStairsCheckMinus(Changed<StairsVolume> changed)
     {
         changed.Behaviour.playerCount--;
-        // clear UI text saying wait for other player. 
     }
 }

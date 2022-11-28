@@ -54,9 +54,15 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
+    public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {
+
+        // when the host disconnects, send the client player to playerleftscene.
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene("PlayerLeftScene");
+
+    }
     public void OnConnectedToServer(NetworkRunner runner) { }
-    public void OnDisconnectedFromServer(NetworkRunner runner) { }
+    public void OnDisconnectedFromServer(NetworkRunner runner) {}
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) 
     {
@@ -113,7 +119,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             GameMode = mode,
             SessionName = _gameName,
-            Scene = SceneManager.GetActiveScene().buildIndex + 2,
+            Scene = SceneManager.GetActiveScene().buildIndex + 3,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
     }

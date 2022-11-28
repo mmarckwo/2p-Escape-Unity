@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Fusion;
 
-public class PlayerScript : NetworkBehaviour, IPlayerJoined
+public class PlayerScript : NetworkBehaviour, IPlayerJoined, IPlayerLeft
 {
     private CharacterController _originalController;
     private NetworkCharacterControllerPrototype _networkController;
@@ -19,6 +19,8 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
     public GameObject pauseMenu;
     public GameObject tipMenu;
     public GameObject notifyScreen;
+
+    private Button restartButton;
 
     [Header("Physics")]
     public float jumpForce = 22.5f;
@@ -173,13 +175,24 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined
         }
     }
 
+    public void PlayerLeft(PlayerRef player)
+    {
+        controlsEnabled = false;
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene("PlayerLeftScene");
+    }
+
     // for client to remove wait for player screen.
     public override void Spawned()
     {
         controlsEnabled = false;
         enablePausing = false;
 
-        if(!Runner.IsServer)
+        // get the restart button. disable it for the client. 
+        restartButton = pauseMenu.transform.GetChild(3).GetComponent<Button>();
+        if (!Object.HasStateAuthority) restartButton.interactable = false;
+
+        if (!Runner.IsServer)
         {
             tipMenu.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;

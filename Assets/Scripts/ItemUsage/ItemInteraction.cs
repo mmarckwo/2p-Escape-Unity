@@ -31,7 +31,7 @@ public class ItemInteraction : NetworkBehaviour
         {
             if (itemName == "Hammer")
             {
-                //other.gameObject whatever kill enemy function.
+                Runner.Despawn(other.gameObject.GetComponent<NetworkObject>());
             }
         }
     }

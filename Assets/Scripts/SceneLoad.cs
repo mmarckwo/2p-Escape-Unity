@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -123,17 +124,26 @@ public class SceneLoad : NetworkBehaviour
 
     static void OnMessageUpdate(Changed<SceneLoad> changed)
     {
-        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
-        notifier.SetActive(true);
+        try
+        {
+            GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+            notifier.SetActive(true);
+
+            notifier.GetComponent<TextMeshProUGUI>().text = changed.Behaviour.reasonTextA + changed.Behaviour.reasonTextB + changed.Behaviour.reasonTextC;
+        } catch (Exception)
+        {}
         
-        notifier.GetComponent<TextMeshProUGUI>().text = changed.Behaviour.reasonTextA + changed.Behaviour.reasonTextB + changed.Behaviour.reasonTextC;
     }
 
     static void OnMessageClear(Changed<SceneLoad> changed)
     {
-        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
-        notifier.SetActive(false);
-
+        try
+        {
+            GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+            notifier.SetActive(false);
+        } catch (Exception) 
+        {}
+        
         changed.Behaviour.playerRef = null;
     }
 
@@ -141,8 +151,13 @@ public class SceneLoad : NetworkBehaviour
     {
         changed.Behaviour.playerCount++;
 
-        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
-        notifier.SetActive(false);
+        try
+        {
+            GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+            notifier.SetActive(false);
+        } catch (Exception)
+        {}
+        
 
         if (changed.Behaviour.playerCount == 2)
         {

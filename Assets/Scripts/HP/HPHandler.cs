@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Fusion;
 
@@ -130,6 +132,17 @@ public class HPHandler : NetworkBehaviour
 
     private void OnDeath()
     {
-        Debug.Log("Death");
+        if (!Object.HasStateAuthority) return;
+
+        try
+        {
+            BasicSpawner spawner = GameObject.FindGameObjectWithTag("BasicSpawner").GetComponent<BasicSpawner>();
+            spawner.player1.GetComponent<PlayerScript>().currentScene = SceneManager.GetActiveScene().name;
+
+            Runner.SetActiveScene("PlayerDeathScene");
+        } catch (Exception)
+        {
+            Debug.Log("error");
+        }
     }
 }

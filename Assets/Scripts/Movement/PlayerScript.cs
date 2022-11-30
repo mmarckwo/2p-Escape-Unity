@@ -39,7 +39,7 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     [Networked]
     public bool controlsEnabled { get; set; }
     [Networked]
-    private bool enablePausing { get; set; }
+    public bool enablePausing { get; set; }
 
     private int enableControllerCounter = 0;
 
@@ -178,6 +178,8 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     public void PlayerLeft(PlayerRef player)
     {
         controlsEnabled = false;
+        enablePausing = false;
+
         Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene("PlayerLeftScene");
     }

@@ -79,6 +79,7 @@ public class LockedKeyDoor : NetworkBehaviour
         {
             GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
             notifier.SetActive(false);
+            
         } catch (Exception)
         {}
 
@@ -87,17 +88,26 @@ public class LockedKeyDoor : NetworkBehaviour
 
     static void OnMessageUpdate(Changed<LockedKeyDoor> changed)
     {
-        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
-        notifier.SetActive(true);
+        try
+        {
+            GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+            notifier.SetActive(true);
 
-        notifier.GetComponent<TextMeshProUGUI>().text = changed.Behaviour.reasonTextA + changed.Behaviour.reasonTextB + changed.Behaviour.reasonTextC;
+            notifier.GetComponent<TextMeshProUGUI>().text = changed.Behaviour.reasonTextA + changed.Behaviour.reasonTextB + changed.Behaviour.reasonTextC;
+        } catch (Exception) 
+        {}
     }
 
     static void OnMessageClear(Changed<LockedKeyDoor> changed)
     {
-        GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
-        notifier.SetActive(false);
+        try
+        {
+            GameObject notifier = changed.Behaviour.playerRef.GetComponent<PlayerInventory>().playerCam.transform.Find("PlayerUICanvas/Notifier").gameObject;
+            notifier.SetActive(false);
 
-        changed.Behaviour.playerRef = null;
+            changed.Behaviour.playerRef = null;
+        } catch (Exception) 
+        {}
+        
     }
 }

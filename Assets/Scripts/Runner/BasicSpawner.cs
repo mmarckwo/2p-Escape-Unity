@@ -119,7 +119,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         {
             GameMode = mode,
             SessionName = _gameName,
-            Scene = SceneManager.GetActiveScene().buildIndex + 3,
+            Scene = SceneManager.GetActiveScene().buildIndex + 4,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
     }

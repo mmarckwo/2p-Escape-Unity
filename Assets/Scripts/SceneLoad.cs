@@ -49,28 +49,29 @@ public class SceneLoad : NetworkBehaviour
         if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
 
         // if there are buttons that need to be pressed, then check to see if they're all pressed.
-        if (buttons.Length == 0)
+        if (buttons.Length != 0)
         {
             // condition.
             int count = buttons.Length;
             // presssed buttons.
             int countChecker = 0;
 
+            Debug.Log(count);
+
             // check each button to see if it is pressed.
             foreach (GameObject button in buttons)
             {
                 try
                 {
-                    if (button.GetComponent<DoorButtonToggle>().buttonStatus) countChecker++;
+                    if (button.GetComponentInChildren<DoorButtonToggle>().buttonStatus) countChecker++;
                 } catch (Exception)
                 {}
                 
                 try
                 {
-                    if (button.GetComponent<DoorButtonToggleWithObject>().buttonStatus) countChecker++;
+                    if (button.GetComponentInChildren<DoorButtonToggleWithObject>().buttonStatus) countChecker++;
                 } catch (Exception)
                 {}
-                
             }
 
             // if all buttons have been been pressed, switch scenes.

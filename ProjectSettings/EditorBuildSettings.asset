@@ -38,4 +38,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/B5/B5_1.unity
     guid: a81257c44d9e30b48a6f125e259f70a7
+  - enabled: 1
+    path: Assets/Scenes/B5/B5_2.unity
+    guid: 779a753e5f246364aa7bbd857f0871a1
+  - enabled: 1
+    path: Assets/Scenes/B5/B5_Central.unity
+    guid: 4a95c6891f7f39e44b37dcf4996a8b86
+  - enabled: 1
+    path: Assets/Scenes/B5/B5_3.unity
+    guid: 25233039357ebb94bb8bc39bfa80b61f
+  - enabled: 1
+    path: Assets/Scenes/B5/B5_4.unity
+    guid: 2960ce4c7c9024a47a6d65f895cb1417
   m_configObjects: {}

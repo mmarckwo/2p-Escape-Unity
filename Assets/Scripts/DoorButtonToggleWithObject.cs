@@ -20,7 +20,7 @@ public class DoorButtonToggleWithObject : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
+        //if (!other.gameObject.GetComponent<NetworkObject>().HasStateAuthority) return;
 
         networkStatus = !networkStatus;
     }

@@ -8,6 +8,11 @@ public class ItemInteraction : NetworkBehaviour
 
     public string itemName = "";
 
+    [Networked(OnChanged = nameof(OnHitSound))]
+    private bool onHitSoundPlay { get; set; }
+    [Header("Sounds")]
+    public AudioSource hitSound;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
@@ -31,8 +36,14 @@ public class ItemInteraction : NetworkBehaviour
         {
             if (itemName == "Hammer")
             {
+                onHitSoundPlay = !onHitSoundPlay;
                 Runner.Despawn(other.gameObject.GetComponent<NetworkObject>());
             }
         }
+    }
+
+    static void OnHitSound(Changed<ItemInteraction> changed)
+    {
+        changed.Behaviour.hitSound.Play();
     }
 }

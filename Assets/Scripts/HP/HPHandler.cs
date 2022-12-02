@@ -23,6 +23,9 @@ public class HPHandler : NetworkBehaviour
     public Color lowHealth = new Color(255, 0, 85);
     public float healthLerpSpeed = 5;       // higher lerp speed goes faster.
 
+    [Header("Sounds")]
+    public AudioSource deathSound;
+
     bool isInit = false;
 
     void Start()
@@ -126,6 +129,7 @@ public class HPHandler : NetworkBehaviour
         if (isDeadOld)
         {
             changed.Behaviour.OnDeath();
+            changed.Behaviour.deathSound.Play();
         }
             
     }

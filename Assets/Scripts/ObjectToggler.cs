@@ -16,6 +16,9 @@ public class ObjectToggler : NetworkBehaviour
     [Networked(OnChanged = nameof(onToggleButton))]
     private bool networkStatus { get; set; }
 
+    [Header("Sounds")]
+    public AudioSource clickSound;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag != "Player") return; // comment this out to toggle with thrown items.
@@ -68,11 +71,13 @@ public class ObjectToggler : NetworkBehaviour
                 objectItemA.SetActive(true);
             }
 
-            // turn off objects in set A.
+            // turn off objects in set B.
             foreach (GameObject objectItemB in changed.Behaviour.objectsToggleB)
             {
                 objectItemB.SetActive(false);
             }
         }
+
+        changed.Behaviour.clickSound.Play();
     }
 }

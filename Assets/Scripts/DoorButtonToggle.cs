@@ -15,6 +15,9 @@ public class DoorButtonToggle : NetworkBehaviour
     [Networked(OnChanged = nameof(onToggleButton))]
     private bool networkStatus { get; set; }
 
+    [Header("Sounds")]
+    public AudioSource clickSound;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag != "Player") return; // comment this out to toggle with thrown items.
@@ -48,5 +51,7 @@ public class DoorButtonToggle : NetworkBehaviour
                 changed.Behaviour.doorToggle.SetActive(true);
             }
         }
+
+        changed.Behaviour.clickSound.Play();
     }
 }

@@ -59,6 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   SceneRef: 
+  climbSound: {fileID: 8300000, guid: 0fc9004ba02e79248bb9b82d9f3d3d8d, type: 3}
 --- !u!1 &7763585974664506083
 GameObject:
   m_ObjectHideFlags: 0

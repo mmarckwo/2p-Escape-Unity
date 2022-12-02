@@ -7,23 +7,28 @@ using UnityEngine;
 [DisallowMultipleComponent]
 // ReSharper disable once CheckNamespace
 public class NetworkCharacterControllerPrototypeCustom : NetworkTransform {
-  [Header("Character Controller Settings")]
-  public float gravity       = -9.81f; // -20.0f
-  public float jumpImpulse   = 8.0f;
-  public float acceleration  = 10.0f;
-  public float braking       = 10.0f;
-  public float maxSpeed      = 2.0f;
-  public float rotationSpeed = 100.0f;
+    [Header("Character Controller Settings")]
+    public float gravity = -9.81f; // -20.0f
+    public float jumpImpulse = 8.0f;
+    public float acceleration = 10.0f;
+    public float braking = 10.0f;
+    public float maxSpeed = 2.0f;
+    public float rotationSpeed = 100.0f;
     public float viewYRotationSpeed = 100.0f;
     public PlayerScript playerScript;
 
-  [Networked]
-  [HideInInspector]
-  public bool IsGrounded { get; set; }
+    [Networked]
+    [HideInInspector]
+    public bool IsGrounded { get; set; }
 
-  [Networked]
-  [HideInInspector]
-  public Vector3 Velocity { get; set; }
+    [Networked]
+    [HideInInspector]
+    public Vector3 Velocity { get; set; }
+
+    [Header("Sounds")]
+    public AudioSource jumpSound;
+    [Networked(OnChanged = nameof(OnJumpSoundPlay))]
+    private bool isJumping { get; set; }
 
   /// <summary>
   /// Sets the default teleport interpolation velocity to be the CC's current velocity.
@@ -89,8 +94,15 @@ public class NetworkCharacterControllerPrototypeCustom : NetworkTransform {
             }
 
             Velocity = newVel;
+
+            isJumping = !isJumping;
         }
   }
+
+    static void OnJumpSoundPlay(Changed<NetworkCharacterControllerPrototypeCustom> changed)
+    {
+        changed.Behaviour.jumpSound.Play();
+    }
 
     public void UmbrellaFall()
     {

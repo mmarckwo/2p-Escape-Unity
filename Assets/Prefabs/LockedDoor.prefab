@@ -60,6 +60,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   awaitForKey: 0
   _doorStatus: 0
+  unlockSound: {fileID: 8300000, guid: 987be53943082c245b0d5b37cab30124, type: 3}
 --- !u!1 &5613785374891859046
 GameObject:
   m_ObjectHideFlags: 0

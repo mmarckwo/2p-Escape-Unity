@@ -33,9 +33,6 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined, IPlayerLeft
     [HideInInspector]
     public int umbrellaFloat = 1;
 
-    [Header("Jump Sound")]
-    public AudioSource jumpSound;
-
     [Networked]
     public bool controlsEnabled { get; set; }
     [Networked]
@@ -122,7 +119,10 @@ public class PlayerScript : NetworkBehaviour, IPlayerJoined, IPlayerLeft
 
             // jump
             if (networkInputData.isJumpPressed)
+            {
                 networkCharacterControllerPrototypeCustom.Jump();
+            }
+                
         }
     }
 

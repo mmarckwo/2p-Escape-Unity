@@ -58,6 +58,11 @@ public class PlayerInventory : NetworkBehaviour
     public Sprite keySprite;
     public Sprite noneSprite;
 
+    [Header("Sounds")]
+    public AudioSource throwSound;
+    [Networked(OnChanged = nameof(OnThrowSoundPlay))]
+    private bool isThrowing { get; set; }
+
     void Awake()
     {
         flashlightHold = this.transform.GetChild(3).GetChild(0).gameObject;
@@ -252,6 +257,7 @@ public class PlayerInventory : NetworkBehaviour
             toggleInventoryAddition = !toggleInventoryAddition;
             networkedInventory = "";
             //setInventoryUI(index, "");
+            isThrowing = !isThrowing;
 
             // when a player throws an item, they can't pick up their own item immediately or hold. 
             //StartCoroutine(pickupCooldown(0.2f));
@@ -259,6 +265,11 @@ public class PlayerInventory : NetworkBehaviour
             pickupCooldownTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
         }
 
+    }
+
+    static void OnThrowSoundPlay(Changed<PlayerInventory> changed)
+    {
+        changed.Behaviour.throwSound.Play();
     }
 
     //static void OnHoldChanged(Changed<PlayerInventory> changed)

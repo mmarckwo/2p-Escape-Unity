@@ -14,6 +14,11 @@ public class SawbladeCollide : NetworkBehaviour
 
     public float turnSpeed = 120f;
 
+    [Header("Sounds")]
+    public AudioSource hurtSound;
+    [Networked(OnChanged = nameof(OnHurtSoundPlay))]
+    private bool hurtSoundPlay { get; set; }
+
     // on collide, get player script from colliding player. say there is that player within the sawblade, and it needs to deal damage.
     void OnTriggerEnter(Collider other)
     {
@@ -61,6 +66,7 @@ public class SawbladeCollide : NetworkBehaviour
         if (damageTickTimer.IsRunning)
         {
             if (causeDamage == true) hurtingPlayer.HealthDown(40f);
+            hurtSoundPlay = !hurtSoundPlay;
             causeDamage = false;
         }
 
@@ -68,6 +74,11 @@ public class SawbladeCollide : NetworkBehaviour
         {
             if (playerInside == true) causeDamage = true;
         }
+    }
+
+    static void OnHurtSoundPlay(Changed<SawbladeCollide> changed)
+    {
+        changed.Behaviour.hurtSound.Play();
     }
 
     // if there is a player inside and a damage tick is ready, start a damage tick. 

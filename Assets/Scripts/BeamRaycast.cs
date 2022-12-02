@@ -19,6 +19,11 @@ public class BeamRaycast : NetworkBehaviour
 
     TickTimer dmgTickTimer = TickTimer.None;
 
+    [Networked(OnChanged = nameof(OnSoundPlay))]
+    private bool soundPlay { get; set; }
+    [Header("Sounds")]
+    public AudioSource zapSound;
+
     void Awake()
     {
         laserLine = GetComponent<LineRenderer>();
@@ -80,9 +85,17 @@ public class BeamRaycast : NetworkBehaviour
 
                 //causeDamage = false;
                 if (Object.HasStateAuthority)
+                {
                     hurtingPlayer.HealthDown(45f);
+                    soundPlay = !soundPlay;
+                }
 
             }
         }
+    }
+
+    static void OnSoundPlay(Changed<BeamRaycast> changed)
+    {
+        changed.Behaviour.zapSound.Play();
     }
 }

@@ -31,6 +31,9 @@ public class StairsVolume : NetworkBehaviour
     [Networked]
     private string reasonTextC { get; set; }
 
+    [Header("Sounds")]
+    public AudioClip climbSound;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag != "Player") return;
@@ -98,6 +101,7 @@ public class StairsVolume : NetworkBehaviour
 
         if (changed.Behaviour.playerCount == 2)
         {
+            AudioSource.PlayClipAtPoint(changed.Behaviour.climbSound, new Vector3(0, 0, 0));
             changed.Behaviour.Runner.SetActiveScene(changed.Behaviour.SceneRef);
         }
     }

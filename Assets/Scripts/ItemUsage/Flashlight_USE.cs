@@ -12,6 +12,9 @@ public class Flashlight_USE : NetworkBehaviour
     private GameObject OnFlashlight;
     private GameObject OffFlashlight;
 
+    [Header("Sounds")]
+    public AudioSource flashlightSound;
+
     private void Awake()
     {
         spotlight = this.transform.GetChild(0).GetChild(1).gameObject.GetComponent<Light>();
@@ -52,6 +55,7 @@ public class Flashlight_USE : NetworkBehaviour
             changed.Behaviour.OnFlashlight.SetActive(true);
             changed.Behaviour.OffFlashlight.SetActive(false);
         }
+        changed.Behaviour.flashlightSound.Play();
     }
 
     public void Init(float throwSpeed)

@@ -13,6 +13,11 @@ public class ChaserDamager : NetworkBehaviour
 
     TickTimer damageTickTimer = TickTimer.None;
 
+    [Networked(OnChanged = nameof(OnHitSound))]
+    private bool onHitSoundPlay { get; set; }
+    [Header("Sounds")]
+    public AudioSource sawHitSound;
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
@@ -56,7 +61,11 @@ public class ChaserDamager : NetworkBehaviour
 
         if (damageTickTimer.IsRunning)
         {
-            if (causeDamage == true) hurtingPlayer.HealthDown(33f);
+            if (causeDamage == true)
+            {
+                hurtingPlayer.HealthDown(33f);
+                onHitSoundPlay = !onHitSoundPlay;
+            }
             causeDamage = false;
         }
 
@@ -64,5 +73,10 @@ public class ChaserDamager : NetworkBehaviour
         {
             if (playerInside == true) causeDamage = true;
         }
+    }
+
+    static void OnHitSound(Changed<ChaserDamager> changed)
+    {
+        changed.Behaviour.sawHitSound.Play();
     }
 }

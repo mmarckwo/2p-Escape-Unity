@@ -26,6 +26,9 @@ public class Teleporter_USE : NetworkBehaviour
     [Networked]
     public bool networkStatusObj { get; set; }
 
+    [Header("Sounds")]
+    public AudioSource useSound;
+
     private void Awake()
     {
         placePortalObj = this.transform.GetChild(0).GetChild(2).gameObject;
@@ -93,6 +96,7 @@ public class Teleporter_USE : NetworkBehaviour
             pc.enabled = false;
             changed.Behaviour.player.transform.position = changed.Behaviour.portalInstanceRef.transform.position;
             pc.enabled = true;
+            changed.Behaviour.useSound.Play();
             changed.Behaviour.Runner.Despawn(changed.Behaviour.Runner.FindObject(changed.Behaviour.portalId));
         }
     }
@@ -101,7 +105,6 @@ public class Teleporter_USE : NetworkBehaviour
     {
         if (changed.Behaviour.networkStatusObj == true)
         {
-            //Debug.Log("TRUE, ORANGE1")
             changed.Behaviour.placePortalObj.SetActive(false);
             changed.Behaviour.readyPortalObj.SetActive(true);
         } else

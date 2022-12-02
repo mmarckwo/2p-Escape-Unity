@@ -13,6 +13,10 @@ public class Umbrella_USE : NetworkBehaviour
     TickTimer canopyToggleTimer = TickTimer.None;
     private bool canToggle = true;
 
+    [Header("Sounds")]
+    public AudioSource openSound;
+    public AudioSource closeSound;
+
     private void Awake()
     {
         closedBrella = this.transform.GetChild(0).GetChild(0).gameObject;
@@ -49,12 +53,16 @@ public class Umbrella_USE : NetworkBehaviour
     {
         if (changed.Behaviour.networkStatus == false)
         {
+            // close.
             changed.Behaviour.closedBrella.SetActive(true);
             changed.Behaviour.openBrella.SetActive(false);
+            changed.Behaviour.closeSound.Play();
         } else
         {
+            // open.
             changed.Behaviour.closedBrella.SetActive(false);
             changed.Behaviour.openBrella.SetActive(true);
+            changed.Behaviour.openSound.Play();
         }
     }
 

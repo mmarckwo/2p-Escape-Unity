@@ -31,6 +31,9 @@ public class LockedKeyDoor : NetworkBehaviour
 
     private GameObject playerRef;
 
+    [Header("Sounds")]
+    public AudioClip unlockSound;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag != "Player") return;
@@ -83,6 +86,7 @@ public class LockedKeyDoor : NetworkBehaviour
         } catch (Exception)
         {}
 
+        AudioSource.PlayClipAtPoint(changed.Behaviour.unlockSound, changed.Behaviour.gameObject.transform.position);
         changed.Behaviour.transform.parent.gameObject.SetActive(false);
     }
 

@@ -10,7 +10,7 @@ public class ItemTrackerScript : NetworkBehaviour, ISceneLoadDone
     public string expectedItemC;
     public string expectedItemD;
 
-    void Start()
+    public override void Spawned()
     {
 
         // if the starting room is reloaded, then only keep track of the first item tracker that spawned when the game first started.
@@ -41,10 +41,13 @@ public class ItemTrackerScript : NetworkBehaviour, ISceneLoadDone
     public void SceneLoadDone()
     {
         GameObject expectedItemList = GameObject.FindGameObjectWithTag("ExpectedItems");
+        Debug.Log("what");
+        Debug.Log(this.gameObject);
 
         // find expected items for subsequent scenes.
         if (expectedItemList)
         {
+            Debug.Log("found");
             ExpectedItems expItems = expectedItemList.GetComponent<ExpectedItems>();
 
             expectedItemA = expItems.itemA;
@@ -53,7 +56,7 @@ public class ItemTrackerScript : NetworkBehaviour, ISceneLoadDone
             expectedItemD = expItems.itemD;
         }
         else
-        {};
+        { Debug.Log("not found"); };
     }
 
 }

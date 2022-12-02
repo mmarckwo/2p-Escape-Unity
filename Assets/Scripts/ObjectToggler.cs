@@ -31,7 +31,7 @@ public class ObjectToggler : NetworkBehaviour
     {
         changed.Behaviour.buttonStatus = !changed.Behaviour.buttonStatus;
 
-        if (changed.Behaviour.buttonStatus == false)
+        if (changed.Behaviour.buttonStatus == true)
         {
             changed.Behaviour.offButton.SetActive(true);
             changed.Behaviour.onButton.SetActive(false);

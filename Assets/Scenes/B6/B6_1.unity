@@ -4971,15 +4971,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8431843254219381950, guid: 11a11e01caf91a8499e355a1add94777, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 248.55171
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8431843254219381950, guid: 11a11e01caf91a8499e355a1add94777, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 676.88617
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8431843254219381950, guid: 11a11e01caf91a8499e355a1add94777, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -669.25214
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8431843254219381950, guid: 11a11e01caf91a8499e355a1add94777, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7344,7 +7344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2166428349450557318, guid: 17839f054c26ff44fa00c7c726279ab8, type: 3}
       propertyPath: SceneRef
-      value: B5_2
+      value: B6_2
       objectReference: {fileID: 0}
     - target: {fileID: 2515558019443222261, guid: 17839f054c26ff44fa00c7c726279ab8, type: 3}
       propertyPath: Flags

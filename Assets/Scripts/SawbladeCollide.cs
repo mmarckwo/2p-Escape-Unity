@@ -65,8 +65,12 @@ public class SawbladeCollide : NetworkBehaviour
 
         if (damageTickTimer.IsRunning)
         {
-            if (causeDamage == true) hurtingPlayer.HealthDown(40f);
-            hurtSoundPlay = !hurtSoundPlay;
+            if (causeDamage == true)
+            { 
+                hurtingPlayer.HealthDown(40f);
+                hurtSoundPlay = !hurtSoundPlay;
+            }
+            
             causeDamage = false;
         }
 

@@ -75239,6 +75239,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2090346904859081579, guid: a54bcbec6bf776e48b4cca04270de6d4, type: 3}
+      propertyPath: m_Size.x
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090346904859081579, guid: a54bcbec6bf776e48b4cca04270de6d4, type: 3}
+      propertyPath: m_Size.z
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 5275173639967354261, guid: a54bcbec6bf776e48b4cca04270de6d4, type: 3}
       propertyPath: m_Name
       value: Chaser (1)
@@ -97119,6 +97127,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2090346904859081579, guid: a54bcbec6bf776e48b4cca04270de6d4, type: 3}
+      propertyPath: m_Size.x
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090346904859081579, guid: a54bcbec6bf776e48b4cca04270de6d4, type: 3}
+      propertyPath: m_Size.z
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 4908469599399885049, guid: a54bcbec6bf776e48b4cca04270de6d4, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068

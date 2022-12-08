@@ -686,6 +686,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   itemName: Teleporter
+  hitSound: {fileID: 0}
 --- !u!114 &9175140632451863486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703,7 +704,7 @@ MonoBehaviour:
   _networkStatus: 0
   _toggleSearch: 0
   _networkStatusObj: 0
-  useSound: {fileID: 0}
+  useSound: {fileID: 4698115002697695359}
 --- !u!114 &6431643887733765856
 MonoBehaviour:
   m_ObjectHideFlags: 0

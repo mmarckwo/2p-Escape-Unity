@@ -1421,7 +1421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter game name...
+  m_text: Enter room name...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df95da797dc96f54a9002969927ffcb5, type: 2}
   m_sharedMaterial: {fileID: 5286689921486714876, guid: df95da797dc96f54a9002969927ffcb5, type: 2}
